@@ -1,154 +1,138 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MSTC Data App</title>
 
 <style>
+*{box-sizing:border-box}
 
-* {
-    box-sizing: border-box;
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#eef2f7;
+  color:#172033;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #eef3f8;
-    color: #172033;
+.app{
+  max-width:480px;
+  min-height:100vh;
+  margin:auto;
+  background:#fff;
 }
 
-.app {
-    max-width: 480px;
-    min-height: 100vh;
-    margin: auto;
-    background: #ffffff;
+.header{
+  background:linear-gradient(135deg,#111827,#2563eb);
+  color:white;
+  padding:28px 22px;
+  border-radius:0 0 30px 30px;
 }
 
-/* HEADER */
-
-.header {
-    background: linear-gradient(135deg, #111827, #2563eb);
-    color: white;
-    padding: 28px 22px;
-    border-radius: 0 0 28px 28px;
+.logo{
+  width:58px;
+  height:58px;
+  background:white;
+  color:#2563eb;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  font-weight:bold;
+  margin-bottom:14px;
 }
 
-.logo {
-    width: 58px;
-    height: 58px;
-    border-radius: 16px;
-    background: white;
-    color: #2563eb;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
-    font-weight: bold;
-    margin-bottom: 15px;
+.header h1{
+  margin:0;
+  font-size:27px;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 26px;
+.header p{
+  margin:8px 0 0;
+  opacity:.85;
 }
 
-.header p {
-    margin: 8px 0 0;
-    opacity: .85;
+.content{
+  padding:20px;
 }
 
-/* CONTENT */
-
-.content {
-    padding: 20px;
+.card{
+  background:#fff;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:16px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
 }
 
-.card {
-    background: white;
-    border-radius: 18px;
-    padding: 18px;
-    margin-bottom: 16px;
-    box-shadow: 0 5px 18px rgba(0,0,0,.08);
+.title{
+  font-size:17px;
+  font-weight:bold;
+  margin-bottom:12px;
 }
 
-.card-title {
-    font-size: 17px;
-    font-weight: bold;
-    margin-bottom: 12px;
+textarea{
+  width:100%;
+  height:150px;
+  resize:none;
+  padding:14px;
+  border:1px solid #d5dbe5;
+  border-radius:14px;
+  font-size:16px;
+  outline:none;
 }
 
-textarea {
-    width: 100%;
-    height: 150px;
-    resize: none;
-    border: 1px solid #d6dce5;
-    border-radius: 14px;
-    padding: 14px;
-    font-size: 15px;
-    outline: none;
+textarea:focus{
+  border-color:#2563eb;
 }
 
-textarea:focus {
-    border-color: #2563eb;
+button{
+  width:100%;
+  border:0;
+  border-radius:13px;
+  padding:15px;
+  margin-top:12px;
+  font-size:16px;
+  font-weight:bold;
 }
 
-/* BUTTONS */
-
-button {
-    width: 100%;
-    border: none;
-    border-radius: 13px;
-    padding: 15px;
-    margin-top: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
+.connect{
+  background:#111827;
+  color:white;
 }
 
-.wallet-btn {
-    background: #111827;
-    color: white;
+.save{
+  background:#2563eb;
+  color:white;
 }
 
-.save-btn {
-    background: #2563eb;
-    color: white;
+.verify{
+  background:#e7efff;
+  color:#1d4ed8;
 }
 
-.verify-btn {
-    background: #e8eefc;
-    color: #1d4ed8;
+.status{
+  margin-top:12px;
+  padding:13px;
+  background:#f1f5f9;
+  border-radius:12px;
+  font-size:13px;
+  word-break:break-all;
 }
 
-/* STATUS */
-
-.status {
-    padding: 13px;
-    border-radius: 12px;
-    background: #f1f5f9;
-    margin-top: 12px;
-    font-size: 14px;
-    word-break: break-all;
+.wallet{
+  margin-top:10px;
+  font-size:12px;
+  color:#64748b;
+  word-break:break-all;
 }
 
-.wallet-address {
-    font-size: 12px;
-    color: #64748b;
-    margin-top: 10px;
-    word-break: break-all;
+.footer{
+  text-align:center;
+  padding:25px;
+  color:#64748b;
+  font-size:12px;
 }
-
-/* FOOTER */
-
-.footer {
-    text-align: center;
-    padding: 25px;
-    color: #64748b;
-    font-size: 12px;
-}
-
 </style>
 </head>
 
@@ -156,251 +140,159 @@ button {
 
 <div class="app">
 
-    <!-- HEADER -->
+  <div class="header">
+    <div class="logo">M</div>
+    <h1>MSTC Data App</h1>
+    <p>Secure Blockchain Data Storage</p>
+  </div>
 
-    <div class="header">
+  <div class="content">
 
-        <div class="logo">
-            M
-        </div>
+    <div class="card">
+      <div class="title">👛 Wallet</div>
 
-        <h1>MSTC Data App</h1>
+      <button class="connect" onclick="connectWallet()">
+        Connect MSTC Wallet
+      </button>
 
-        <p>Secure Blockchain Data Storage</p>
-
+      <div id="wallet" class="wallet">
+        Wallet not connected
+      </div>
     </div>
 
+    <div class="card">
+      <div class="title">📝 Store Data</div>
 
-    <!-- CONTENT -->
+      <textarea id="data"
+        placeholder="Enter your data here..."></textarea>
 
-    <div class="content">
-
-
-        <!-- WALLET -->
-
-        <div class="card">
-
-            <div class="card-title">
-                👛 Wallet
-            </div>
-
-            <button
-                class="wallet-btn"
-                onclick="connectWallet()">
-
-                Connect Wallet
-
-            </button>
-
-            <div
-                id="wallet"
-                class="wallet-address">
-
-                Wallet not connected
-
-            </div>
-
-        </div>
-
-
-        <!-- DATA -->
-
-        <div class="card">
-
-            <div class="card-title">
-                📝 Store Your Data
-            </div>
-
-            <textarea
-                id="data"
-                placeholder="Enter the data you want to store...">
-            </textarea>
-
-            <button
-                class="save-btn"
-                onclick="saveData()">
-
-                💾 Save to MSTC
-
-            </button>
-
-        </div>
-
-
-        <!-- VERIFY -->
-
-        <div class="card">
-
-            <div class="card-title">
-                🔍 Verify Data
-            </div>
-
-            <button
-                class="verify-btn"
-                onclick="verifyData()">
-
-                Verify Data
-
-            </button>
-
-            <div
-                id="result"
-                class="status">
-
-                No data saved yet.
-
-            </div>
-
-        </div>
-
-
+      <button class="save" onclick="saveData()">
+        💾 Save to MSTC
+      </button>
     </div>
 
+    <div class="card">
+      <div class="title">🔍 Verify</div>
 
-    <!-- FOOTER -->
+      <button class="verify" onclick="verifyData()">
+        Verify Data
+      </button>
 
-    <div class="footer">
-
-        MSTC Blockchain • AJJRA Technology
-
+      <div id="result" class="status">
+        No data saved yet.
+      </div>
     </div>
+
+  </div>
+
+  <div class="footer">
+    MSTC Blockchain • AJJRA Technology
+  </div>
 
 </div>
 
-
 <script>
 
-let walletAddress = null;
-let savedHash = null;
+let walletAddress = "";
+let savedHash = "";
 
+/* WALLET */
 
-/* CONNECT WALLET */
+async function connectWallet(){
 
-async function connectWallet() {
+  if(!window.ethereum){
+    alert("Open this website in a Web3 wallet browser.");
+    return;
+  }
 
-    if (!window.ethereum) {
+  try{
 
-        alert(
-            "Please open this app in MetaMask or a compatible Web3 wallet."
-        );
+    const accounts =
+      await window.ethereum.request({
+        method:"eth_requestAccounts"
+      });
 
-        return;
-    }
+    walletAddress = accounts[0];
 
-    try {
+    document.getElementById("wallet").innerText =
+      "Connected: " + walletAddress;
 
-        const accounts =
-            await window.ethereum.request({
-                method: "eth_requestAccounts"
-            });
+  }catch(error){
 
-        walletAddress = accounts[0];
+    alert("Wallet connection cancelled.");
 
-        document.getElementById("wallet").innerText =
-            "Connected: " + walletAddress;
-
-    }
-
-    catch(error) {
-
-        alert("Wallet connection cancelled.");
-
-    }
-
+  }
 }
 
 
-/* CREATE HASH */
+/* HASH */
 
-async function createHash(text) {
+async function makeHash(text){
 
-    const encoder =
-        new TextEncoder();
+  const data =
+    new TextEncoder().encode(text);
 
-    const data =
-        encoder.encode(text);
+  const buffer =
+    await crypto.subtle.digest("SHA-256",data);
 
-    const hashBuffer =
-        await crypto.subtle.digest(
-            "SHA-256",
-            data
-        );
-
-    const hashArray =
-        Array.from(
-            new Uint8Array(hashBuffer)
-        );
-
-    return hashArray
-        .map(
-            b => b.toString(16).padStart(2, "0")
-        )
-        .join("");
-
+  return Array.from(
+    new Uint8Array(buffer)
+  ).map(
+    b => b.toString(16).padStart(2,"0")
+  ).join("");
 }
 
 
 /* SAVE */
 
-async function saveData() {
+async function saveData(){
 
-    const text =
-        document.getElementById("data").value.trim();
+  const text =
+    document.getElementById("data").value.trim();
 
-    if (!text) {
+  if(!text){
+    alert("Please enter data.");
+    return;
+  }
 
-        alert("Please enter some data.");
+  savedHash = await makeHash(text);
 
-        return;
-
-    }
-
-    savedHash =
-        await createHash(text);
-
-    document.getElementById("result").innerHTML =
-        "<b>Data prepared successfully ✅</b><br><br>" +
-        "SHA-256 Hash:<br>" +
-        savedHash +
-        "<br><br>" +
-        "Status: Ready for MSTC Testnet";
+  document.getElementById("result").innerHTML =
+    "<b>✅ Data Ready</b><br><br>" +
+    "SHA-256 Hash:<br>" +
+    savedHash +
+    "<br><br>" +
+    "Status: Ready for MSTC Testnet";
 
 }
 
 
 /* VERIFY */
 
-async function verifyData() {
+async function verifyData(){
 
-    const text =
-        document.getElementById("data").value.trim();
+  const text =
+    document.getElementById("data").value.trim();
 
-    if (!text) {
+  if(!text){
+    alert("Enter data first.");
+    return;
+  }
 
-        alert("Enter the data first.");
+  const hash = await makeHash(text);
 
-        return;
+  if(hash === savedHash){
 
-    }
+    document.getElementById("result").innerHTML =
+      "<b>✅ Data Verified</b><br><br>" +
+      "Hash matches.";
 
-    const hash =
-        await createHash(text);
+  }else{
 
-    if (hash === savedHash) {
+    document.getElementById("result").innerHTML =
+      "<b>❌ Data Not Matched</b>";
 
-        document.getElementById("result").innerHTML =
-            "<b>✅ Data Verified</b><br><br>" +
-            "Hash matches the saved record.";
-
-    }
-
-    else {
-
-        document.getElementById("result").innerHTML =
-            "<b>❌ Data does not match</b>";
-
-    }
-
+  }
 }
 
 </script>
