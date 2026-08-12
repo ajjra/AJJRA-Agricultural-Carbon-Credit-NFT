@@ -3,136 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MSTC Data App</title>
+
+<title>MSTC Data Vault</title>
 
 <style>
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
 body{
-  margin:0;
   font-family:Arial,sans-serif;
-  background:#eef2f7;
-  color:#172033;
+  background:#070b16;
+  color:white;
 }
 
 .app{
   max-width:480px;
   min-height:100vh;
   margin:auto;
-  background:#fff;
+  background:#0b1020;
+  padding-bottom:30px;
 }
 
-.header{
-  background:linear-gradient(135deg,#111827,#2563eb);
-  color:white;
-  padding:28px 22px;
+/* TOP */
+
+.top{
+  padding:25px 20px 20px;
+  background:linear-gradient(145deg,#111a38,#172b68);
   border-radius:0 0 30px 30px;
 }
 
-.logo{
-  width:58px;
-  height:58px;
-  background:white;
-  color:#2563eb;
-  border-radius:16px;
+.brand{
   display:flex;
   align-items:center;
+  gap:13px;
+}
+
+.logo{
+  width:52px;
+  height:52px;
+  border-radius:15px;
+  background:linear-gradient(135deg,#4f8cff,#7c3aed);
+  display:flex;
   justify-content:center;
-  font-size:25px;
+  align-items:center;
+  font-size:24px;
   font-weight:bold;
-  margin-bottom:14px;
 }
 
-.header h1{
-  margin:0;
-  font-size:27px;
+.brand h1{
+  font-size:21px;
 }
 
-.header p{
-  margin:8px 0 0;
-  opacity:.85;
+.brand p{
+  color:#aeb9d6;
+  font-size:12px;
+  margin-top:4px;
 }
+
+/* STATUS */
+
+.statusbar{
+  margin-top:22px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(255,255,255,.08);
+  padding:12px 14px;
+  border-radius:13px;
+  font-size:12px;
+}
+
+.online{
+  color:#4ade80;
+}
+
+/* CONTENT */
 
 .content{
-  padding:20px;
+  padding:18px;
 }
 
 .card{
-  background:#fff;
-  border-radius:18px;
+  background:#11182b;
+  border:1px solid #1d2945;
+  border-radius:20px;
   padding:18px;
   margin-bottom:16px;
-  box-shadow:0 5px 18px rgba(0,0,0,.08);
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
 }
 
-.title{
-  font-size:17px;
+.card-title{
+  font-size:16px;
   font-weight:bold;
-  margin-bottom:12px;
+  margin-bottom:15px;
 }
 
-textarea{
-  width:100%;
-  height:150px;
-  resize:none;
-  padding:14px;
-  border:1px solid #d5dbe5;
+/* WALLET */
+
+.wallet{
+  background:#0b1224;
   border-radius:14px;
-  font-size:16px;
-  outline:none;
-}
-
-textarea:focus{
-  border-color:#2563eb;
-}
-
-button{
-  width:100%;
-  border:0;
-  border-radius:13px;
-  padding:15px;
-  margin-top:12px;
-  font-size:16px;
-  font-weight:bold;
+  padding:14px;
+  color:#9ca9c7;
+  font-size:12px;
+  word-break:break-all;
 }
 
 .connect{
-  background:#111827;
+  width:100%;
+  border:0;
+  padding:14px;
+  border-radius:13px;
+  margin-bottom:10px;
+  background:#2563eb;
   color:white;
+  font-size:15px;
+  font-weight:bold;
+}
+
+/* DATA */
+
+textarea{
+  width:100%;
+  height:145px;
+  border:1px solid #293653;
+  border-radius:15px;
+  background:#080e1d;
+  color:white;
+  padding:15px;
+  resize:none;
+  outline:none;
+  font-size:14px;
+}
+
+textarea::placeholder{
+  color:#68758f;
+}
+
+textarea:focus{
+  border-color:#4f8cff;
 }
 
 .save{
-  background:#2563eb;
+  width:100%;
+  margin-top:13px;
+  border:0;
+  border-radius:14px;
+  padding:16px;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
   color:white;
+  font-size:16px;
+  font-weight:bold;
 }
+
+/* INFO */
+
+.info{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.infoBox{
+  background:#0b1224;
+  padding:14px;
+  border-radius:14px;
+}
+
+.label{
+  font-size:11px;
+  color:#7f8ba6;
+}
+
+.value{
+  margin-top:6px;
+  font-size:14px;
+  font-weight:bold;
+}
+
+/* VERIFY */
 
 .verify{
-  background:#e7efff;
-  color:#1d4ed8;
+  width:100%;
+  border:1px solid #314267;
+  background:#111d35;
+  color:#8db5ff;
+  padding:14px;
+  border-radius:13px;
+  font-weight:bold;
 }
 
-.status{
+.result{
   margin-top:12px;
-  padding:13px;
-  background:#f1f5f9;
-  border-radius:12px;
-  font-size:13px;
+  background:#080e1d;
+  padding:14px;
+  border-radius:13px;
+  color:#aeb9d6;
+  font-size:12px;
   word-break:break-all;
 }
 
-.wallet{
-  margin-top:10px;
-  font-size:12px;
-  color:#64748b;
-  word-break:break-all;
-}
+/* FOOTER */
 
 .footer{
   text-align:center;
-  padding:25px;
-  color:#64748b;
-  font-size:12px;
+  color:#596681;
+  font-size:11px;
+  padding:10px;
 }
+
 </style>
 </head>
 
@@ -140,69 +222,184 @@ button{
 
 <div class="app">
 
-  <div class="header">
+<!-- HEADER -->
+
+<div class="top">
+
+  <div class="brand">
+
     <div class="logo">M</div>
-    <h1>MSTC Data App</h1>
-    <p>Secure Blockchain Data Storage</p>
-  </div>
 
-  <div class="content">
-
-    <div class="card">
-      <div class="title">👛 Wallet</div>
-
-      <button class="connect" onclick="connectWallet()">
-        Connect MSTC Wallet
-      </button>
-
-      <div id="wallet" class="wallet">
-        Wallet not connected
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="title">📝 Store Data</div>
-
-      <textarea id="data"
-        placeholder="Enter your data here..."></textarea>
-
-      <button class="save" onclick="saveData()">
-        💾 Save to MSTC
-      </button>
-    </div>
-
-    <div class="card">
-      <div class="title">🔍 Verify</div>
-
-      <button class="verify" onclick="verifyData()">
-        Verify Data
-      </button>
-
-      <div id="result" class="status">
-        No data saved yet.
-      </div>
+    <div>
+      <h1>MSTC Data Vault</h1>
+      <p>AJJRA Blockchain Technology</p>
     </div>
 
   </div>
 
-  <div class="footer">
-    MSTC Blockchain • AJJRA Technology
+  <div class="statusbar">
+
+    <span>● MSTC Testnet</span>
+
+    <span class="online">
+      ● ONLINE
+    </span>
+
   </div>
 
 </div>
+
+
+<div class="content">
+
+
+<!-- WALLET -->
+
+<div class="card">
+
+  <div class="card-title">
+    👛 Wallet Connection
+  </div>
+
+  <button
+    class="connect"
+    onclick="connectWallet()">
+
+    Connect MSTC Wallet
+
+  </button>
+
+  <div
+    id="wallet"
+    class="wallet">
+
+    Wallet not connected
+
+  </div>
+
+</div>
+
+
+<!-- DATA -->
+
+<div class="card">
+
+  <div class="card-title">
+    🔐 Secure Data Storage
+  </div>
+
+  <textarea
+    id="data"
+    placeholder="Enter the information you want to secure...">
+  </textarea>
+
+  <button
+    class="save"
+    onclick="saveData()">
+
+    🚀 SAVE TO MSTC
+
+  </button>
+
+</div>
+
+
+<!-- BLOCKCHAIN INFO -->
+
+<div class="card">
+
+  <div class="card-title">
+    ⛓ Blockchain Status
+  </div>
+
+  <div class="info">
+
+    <div class="infoBox">
+
+      <div class="label">
+        NETWORK
+      </div>
+
+      <div class="value">
+        MST Testnet
+      </div>
+
+    </div>
+
+    <div class="infoBox">
+
+      <div class="label">
+        SECURITY
+      </div>
+
+      <div class="value">
+        SHA-256
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- VERIFY -->
+
+<div class="card">
+
+  <div class="card-title">
+    🔎 Verify Data
+  </div>
+
+  <button
+    class="verify"
+    onclick="verifyData()">
+
+    Verify Blockchain Data
+
+  </button>
+
+  <div
+    id="result"
+    class="result">
+
+    No transaction yet.
+
+  </div>
+
+</div>
+
+
+</div>
+
+
+<div class="footer">
+
+  MSTC Blockchain • AJJRA Technology • Data Vault
+
+</div>
+
+</div>
+
 
 <script>
 
 let walletAddress = "";
 let savedHash = "";
 
+
 /* WALLET */
 
 async function connectWallet(){
 
   if(!window.ethereum){
-    alert("Open this website in a Web3 wallet browser.");
+
+    alert(
+      "Please open this app using a Web3 compatible wallet."
+    );
+
     return;
+
   }
 
   try{
@@ -215,31 +412,40 @@ async function connectWallet(){
     walletAddress = accounts[0];
 
     document.getElementById("wallet").innerText =
-      "Connected: " + walletAddress;
+      "Connected\n" + walletAddress;
 
-  }catch(error){
+  }
+
+  catch(error){
 
     alert("Wallet connection cancelled.");
 
   }
+
 }
 
 
 /* HASH */
 
-async function makeHash(text){
+async function createHash(text){
 
-  const data =
+  const bytes =
     new TextEncoder().encode(text);
 
   const buffer =
-    await crypto.subtle.digest("SHA-256",data);
+    await crypto.subtle.digest(
+      "SHA-256",
+      bytes
+    );
 
   return Array.from(
     new Uint8Array(buffer)
-  ).map(
+  )
+  .map(
     b => b.toString(16).padStart(2,"0")
-  ).join("");
+  )
+  .join("");
+
 }
 
 
@@ -251,18 +457,27 @@ async function saveData(){
     document.getElementById("data").value.trim();
 
   if(!text){
+
     alert("Please enter data.");
+
     return;
+
   }
 
-  savedHash = await makeHash(text);
+  savedHash =
+    await createHash(text);
 
   document.getElementById("result").innerHTML =
-    "<b>✅ Data Ready</b><br><br>" +
-    "SHA-256 Hash:<br>" +
+
+    "✅ Data prepared<br><br>" +
+
+    "<b>SHA-256:</b><br>" +
+
     savedHash +
+
     "<br><br>" +
-    "Status: Ready for MSTC Testnet";
+
+    "⏳ Ready for MSTC Testnet transaction";
 
 }
 
@@ -275,24 +490,34 @@ async function verifyData(){
     document.getElementById("data").value.trim();
 
   if(!text){
+
     alert("Enter data first.");
+
     return;
+
   }
 
-  const hash = await makeHash(text);
+  const hash =
+    await createHash(text);
 
   if(hash === savedHash){
 
     document.getElementById("result").innerHTML =
-      "<b>✅ Data Verified</b><br><br>" +
-      "Hash matches.";
 
-  }else{
+      "✅ <b>DATA VERIFIED</b><br><br>" +
 
-    document.getElementById("result").innerHTML =
-      "<b>❌ Data Not Matched</b>";
+      "Hash matches the saved record.";
 
   }
+
+  else{
+
+    document.getElementById("result").innerHTML =
+
+      "❌ <b>DATA NOT MATCHED</b>";
+
+  }
+
 }
 
 </script>
