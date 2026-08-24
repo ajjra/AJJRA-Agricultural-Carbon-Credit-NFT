@@ -1,0 +1,2856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>AJJRA – Agricultural Carbon Credit</title>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f0f8f2;
+    color:#17301f;
+}
+
+/* HEADER */
+
+.header{
+    background:linear-gradient(
+        135deg,
+        #075b2b,
+        #10a653
+    );
+    color:white;
+    padding:22px 18px;
+    text-align:center;
+}
+
+.logo{
+    font-size:36px;
+    font-weight:900;
+    letter-spacing:5px;
+}
+
+.tagline{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.92;
+}
+
+/* NAV */
+
+.nav{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:white;
+    display:flex;
+    gap:7px;
+    overflow-x:auto;
+    padding:10px;
+    box-shadow:0 2px 10px #0001;
+}
+
+.nav button{
+    border:0;
+    background:#e7f5ea;
+    color:#075b2b;
+    padding:11px 15px;
+    border-radius:12px;
+    white-space:nowrap;
+    font-weight:bold;
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:15px;
+}
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* CARD */
+
+.card{
+    background:white;
+    border-radius:18px;
+    padding:18px;
+    margin-bottom:15px;
+    box-shadow:
+        0 4px 18px rgba(0,0,0,.07);
+}
+
+.card h2{
+    margin-top:0;
+}
+
+/* GRID */
+
+.grid{
+    display:grid;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(160px,1fr)
+        );
+    gap:12px;
+}
+
+/* STAT */
+
+.stat{
+    font-size:28px;
+    font-weight:900;
+    color:#087b38;
+}
+
+.small{
+    font-size:13px;
+    color:#6b786e;
+}
+
+/* INPUT */
+
+label{
+    display:block;
+    margin-bottom:13px;
+    font-weight:600;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:13px;
+    margin-top:6px;
+    border:1px solid #cad8ce;
+    border-radius:11px;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#10a653;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+/* BUTTON */
+
+.btn{
+    width:100%;
+    padding:14px;
+    border:0;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.green{
+    background:#087b38;
+    color:white;
+}
+
+.green:hover{
+    background:#05642d;
+}
+
+.light{
+    background:#e7f5ea;
+    color:#087b38;
+}
+
+.blue{
+    background:#2563eb;
+    color:white;
+}
+
+.orange{
+    background:#e99512;
+    color:white;
+}
+
+.red{
+    background:#d72f2f;
+    color:white;
+}
+
+/* RESULT */
+
+.result{
+    padding:13px;
+    margin-top:12px;
+    border-radius:12px;
+    background:#edf8ef;
+}
+
+.warning{
+    background:#fff5d8;
+    padding:13px;
+    border-radius:12px;
+    font-size:13px;
+    margin-top:10px;
+}
+
+.success{
+    background:#e4f8e9;
+    padding:13px;
+    border-radius:12px;
+    margin-top:10px;
+}
+
+.danger{
+    background:#ffe7e7;
+    padding:13px;
+    border-radius:12px;
+}
+
+/* PHOTO */
+
+.preview{
+    width:100%;
+    max-height:280px;
+    object-fit:cover;
+    border-radius:14px;
+    margin-top:10px;
+}
+
+/* NFT */
+
+.nft{
+    border:1px solid #d5e4d8;
+    border-radius:15px;
+    padding:15px;
+    margin-top:10px;
+}
+
+.nft-title{
+    font-size:19px;
+    font-weight:bold;
+}
+
+.badge{
+    display:inline-block;
+    background:#e3f7e8;
+    color:#087b38;
+    padding:6px 10px;
+    border-radius:30px;
+    font-size:12px;
+    margin-top:7px;
+}
+
+/* MARKET */
+
+.market-item{
+    border:1px solid #d8e3da;
+    border-radius:14px;
+    padding:15px;
+    margin-bottom:10px;
+}
+
+.price{
+    font-size:22px;
+    font-weight:900;
+    color:#087b38;
+}
+
+/* TABLE */
+
+.table{
+    width:100%;
+    overflow:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th,td{
+    padding:10px;
+    border-bottom:1px solid #e2e9e4;
+    text-align:left;
+    font-size:13px;
+}
+
+/* CODE */
+
+pre{
+    background:#101610;
+    color:#d9f6df;
+    padding:13px;
+    border-radius:12px;
+    overflow:auto;
+    font-size:12px;
+}
+
+/* FOOTER */
+
+.footer{
+    text-align:center;
+    padding:30px;
+    color:#718078;
+    font-size:12px;
+}
+
+/* MOBILE */
+
+@media(max-width:500px){
+
+    .logo{
+        font-size:30px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- HEADER -->
+
+<header class="header">
+
+<div class="logo">
+AJJRA
+</div>
+
+<div class="tagline">
+AGRI • CARBON • BLOCKCHAIN • NFT
+</div>
+
+</header>
+
+
+<!-- NAVIGATION -->
+
+<nav class="nav">
+
+<button onclick="openPage('home')">
+🏠 Home
+</button>
+
+<button onclick="openPage('farms')">
+🌱 My Farms
+</button>
+
+<button onclick="openPage('addfarm')">
+➕ Add Farm
+</button>
+
+<button onclick="openPage('carbon')">
+📊 Carbon
+</button>
+
+<button onclick="openPage('verification')">
+🔍 Verification
+</button>
+
+<button onclick="openPage('nft')">
+🎨 NFT
+</button>
+
+<button onclick="openPage('wallet')">
+👛 Wallet
+</button>
+
+<button onclick="openPage('market')">
+💰 Market
+</button>
+
+</nav>
+
+
+<div class="container">
+
+
+<!-- =================================
+HOME
+================================= -->
+
+<section
+id="home"
+class="page active">
+
+<div class="card">
+
+<h2>
+🌱 AJJRA
+</h2>
+
+<p>
+Agricultural Carbon Credit
+Blockchain Platform.
+</p>
+
+<div class="warning">
+
+⚠️ Carbon calculator നൽകുന്ന value
+ഒരു <b>estimated CO₂e</b> ആണ്.
+Verification ഇല്ലാതെ ഇത് official
+carbon credit ആയി കണക്കാക്കരുത്.
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="small">
+My Farms
+</div>
+
+<div
+id="dashboardFarms"
+class="stat">
+0
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="small">
+Estimated CO₂e
+</div>
+
+<div
+id="dashboardCarbon"
+class="stat">
+0 kg
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="small">
+Verified Credits
+</div>
+
+<div
+id="dashboardCredits"
+class="stat">
+0 kg
+</div>
+
+</div>
+
+
+<div class="card">
+
+<div class="small">
+NFTs
+</div>
+
+<div
+id="dashboardNFT"
+class="stat">
+0
+</div>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>
+AJJRA Workflow
+</h3>
+
+<p>
+🌱 Farm Registration
+</p>
+
+<p>
+📍 GPS Mapping
+</p>
+
+<p>
+📷 Farm Evidence
+</p>
+
+<p>
+📊 Carbon Estimation
+</p>
+
+<p>
+🔍 Verification
+</p>
+
+<p>
+🪙 Carbon Credit
+</p>
+
+<p>
+🎨 NFT
+</p>
+
+<p>
+⛓️ MST Blockchain
+</p>
+
+<p>
+♻️ Retirement
+</p>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+MY FARMS
+================================= -->
+
+<section
+id="farms"
+class="page">
+
+<div class="card">
+
+<h2>
+🌱 My Farms
+</h2>
+
+<div id="farmList">
+
+No farms registered.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+ADD FARM
+================================= -->
+
+<section
+id="addfarm"
+class="page">
+
+<div class="card">
+
+<h2>
+➕ Register Farm
+</h2>
+
+
+<label>
+Crop
+
+<select id="crop">
+
+<option>Bamboo</option>
+
+<option>Coconut</option>
+
+<option>Rubber</option>
+
+<option>Mango</option>
+
+<option>Banana</option>
+
+<option>Coffee</option>
+
+<option>Cocoa</option>
+
+<option>Rice</option>
+
+<option>Spices</option>
+
+<option>Agroforestry</option>
+
+</select>
+
+</label>
+
+
+<label>
+Farm Area (Hectare)
+
+<input
+id="farmArea"
+type="number"
+step="0.0001"
+placeholder="0.4047">
+
+</label>
+
+
+<label>
+Plant / Tree Count
+
+<input
+id="plantCount"
+type="number"
+placeholder="160">
+
+</label>
+
+
+<label>
+Planting Date
+
+<input
+id="plantingDate"
+type="date">
+
+</label>
+
+
+<label>
+Latitude
+
+<input
+id="latitude"
+type="number"
+step="any">
+
+</label>
+
+
+<label>
+Longitude
+
+<input
+id="longitude"
+type="number"
+step="any">
+
+</label>
+
+
+<button
+class="btn light"
+onclick="getGPS()">
+
+📍 Get Current GPS
+
+</button>
+
+
+<br><br>
+
+
+<label>
+Farm Photo
+
+<input
+id="farmPhoto"
+type="file"
+accept="image/*"
+capture="environment"
+onchange="previewFarmPhoto(event)">
+
+</label>
+
+
+<img
+id="farmPhotoPreview"
+class="preview"
+style="display:none">
+
+
+<label>
+Farm Notes
+
+<textarea
+id="farmNotes"
+placeholder="Enter farm details">
+</textarea>
+
+</label>
+
+
+<button
+class="btn green"
+onclick="registerFarm()">
+
+🌱 Register Farm
+
+</button>
+
+
+<div
+id="farmMessage">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+CARBON
+================================= -->
+
+<section
+id="carbon"
+class="page">
+
+<div class="card">
+
+<h2>
+📊 Carbon Calculator
+</h2>
+
+<div class="warning">
+
+Demo calculation only.
+Use the project's approved methodology
+for real carbon-credit issuance.
+
+</div>
+
+
+<label>
+Crop
+
+<select
+id="carbonCrop"
+onchange="calculateCarbon()">
+
+<option>Bamboo</option>
+<option>Coconut</option>
+<option>Rubber</option>
+<option>Mango</option>
+<option>Banana</option>
+<option>Coffee</option>
+<option>Cocoa</option>
+<option>Rice</option>
+<option>Spices</option>
+<option>Agroforestry</option>
+
+</select>
+
+</label>
+
+
+<label>
+Area (Hectare)
+
+<input
+id="carbonArea"
+type="number"
+step="0.0001"
+value="0.4047"
+oninput="calculateCarbon()">
+
+</label>
+
+
+<label>
+Plant Count
+
+<input
+id="carbonPlants"
+type="number"
+value="160"
+oninput="calculateCarbon()">
+
+</label>
+
+
+<div class="card">
+
+<div class="small">
+Estimated CO₂e
+</div>
+
+<div
+id="carbonResult"
+class="stat">
+
+0 kg
+
+</div>
+
+</div>
+
+
+<button
+class="btn green"
+onclick="saveCarbonRecord()">
+
+💾 Save Carbon Estimate
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+VERIFICATION
+================================= -->
+
+<section
+id="verification"
+class="page">
+
+<div class="card">
+
+<h2>
+🔍 Carbon Verification
+</h2>
+
+<p>
+Farm data verifier പരിശോധിക്കും.
+</p>
+
+<div class="warning">
+
+Farmer-ന് നേരിട്ട് verified credit
+mint ചെയ്യാൻ പാടില്ല.
+
+</div>
+
+<label>
+Farm ID
+
+<input
+id="verifyFarmId"
+type="number"
+placeholder="1">
+
+</label>
+
+<label>
+Verified CO₂e (kg)
+
+<input
+id="verifyCarbon"
+type="number"
+step="0.01">
+
+</label>
+
+<label>
+Verification ID
+
+<input
+id="verifyId"
+placeholder="VER-2026-0001">
+
+</label>
+
+<label>
+Verifier Name
+
+<input
+id="verifierName"
+placeholder="Authorized Verifier">
+
+</label>
+
+<button
+class="btn blue"
+onclick="verifyFarm()">
+
+🔍 Mark as Verified
+
+</button>
+
+<div
+id="verificationResult">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+CARBON CREDIT
+================================= -->
+
+<section
+id="credit"
+class="page">
+
+<div class="card">
+
+<h2>
+🪙 Carbon Credits
+</h2>
+
+<div
+id="creditList">
+
+No verified credits.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+NFT
+================================= -->
+
+<section
+id="nft"
+class="page">
+
+<div class="card">
+
+<h2>
+🎨 Carbon Credit NFT
+</h2>
+
+<p class="small">
+
+NFT mint ചെയ്യുന്നത് verified carbon
+credit-ന് മാത്രം.
+
+</p>
+
+
+<label>
+Farm ID
+
+<input
+id="nftFarmId"
+type="number"
+value="1">
+
+</label>
+
+
+<label>
+Verified Carbon (kg)
+
+<input
+id="nftCarbon"
+type="number"
+step="0.01">
+
+</label>
+
+
+<label>
+Verification ID
+
+<input
+id="nftVerificationId"
+placeholder="VER-2026-0001">
+
+</label>
+
+
+<label>
+IPFS Metadata CID
+
+<input
+id="nftCID"
+placeholder="ipfs://...">
+
+</label>
+
+
+<button
+class="btn green"
+onclick="mintNFT()">
+
+🎨 Mint Carbon NFT
+
+</button>
+
+
+<div
+id="nftResult">
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>
+My NFTs
+</h3>
+
+<div
+id="nftList">
+
+No NFTs.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+WALLET
+================================= -->
+
+<section
+id="wallet"
+class="page">
+
+<div class="card">
+
+<h2>
+👛 Wallet
+</h2>
+
+<button
+class="btn green"
+onclick="connectWallet()">
+
+🔗 Connect Wallet
+
+</button>
+
+
+<div
+id="walletAddress"
+class="result">
+
+Wallet not connected.
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>
+⛓️ MST Testnet
+</h3>
+
+<p>
+Chain ID:
+<b>91562037</b>
+</p>
+
+<p>
+Token:
+<b>tMSTC</b>
+</p>
+
+<p>
+Network:
+<b>MST Testnet</b>
+</p>
+
+
+<button
+class="btn light"
+onclick="addMSTNetwork()">
+
+➕ Add MST Testnet
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+IPFS
+================================= -->
+
+<section
+id="ipfs"
+class="page">
+
+<div class="card">
+
+<h2>
+📄 IPFS Certificate
+</h2>
+
+<p>
+
+NFT metadata, certificates and
+supporting documents can be stored
+using IPFS.
+
+</p>
+
+<label>
+
+IPFS CID
+
+<input
+id="ipfsCID"
+placeholder="Qm... / bafy...">
+
+</label>
+
+
+<button
+class="btn green"
+onclick="openIPFS()">
+
+📄 Open IPFS
+
+</button>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+RETIRE
+================================= -->
+
+<section
+id="retire"
+class="page">
+
+<div class="card">
+
+<h2>
+♻️ Retire Carbon Credit
+</h2>
+
+<label>
+NFT Token ID
+
+<input
+id="retireTokenId"
+type="number">
+
+</label>
+
+
+<button
+class="btn red"
+onclick="retireNFT()">
+
+♻️ Retire Credit
+
+</button>
+
+
+<div
+id="retireResult">
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+MARKETPLACE
+================================= -->
+
+<section
+id="market"
+class="page">
+
+<div class="card">
+
+<h2>
+💰 AJJRA Marketplace
+</h2>
+
+<div class="warning">
+
+Only legally transferable and properly
+verified carbon credits should be listed.
+
+</div>
+
+
+<div
+id="marketList">
+
+No verified credits available.
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =================================
+RECORDS
+================================= -->
+
+<section
+id="records"
+class="page">
+
+<div class="card">
+
+<h2>
+📜 Blockchain / App Records
+</h2>
+
+<pre id="allRecords">
+[]
+</pre>
+
+</div>
+
+</section>
+
+
+</div>
+
+
+<footer class="footer">
+
+<b>AJJRA</b>
+
+<br>
+
+Agri • Carbon • Blockchain • NFT
+
+<br><br>
+
+© 2026 AJJRA
+
+</footer>
+
+
+
+<script>
+
+/* =================================
+MST NETWORK
+================================= */
+
+const MST = {
+
+chainId:91562037,
+
+chainIdHex:"0x578d8d5",
+
+chainName:"MST Testnet",
+
+rpc:"https://testnetrpc.mstblockchain.com",
+
+symbol:"tMSTC",
+
+explorer:"https://testnet.mstscan.com"
+
+};
+
+
+/* =================================
+YOUR CONTRACT ADDRESS
+================================= */
+
+/*
+
+After deploying AgriCarbonNFT.sol,
+paste address here.
+
+Example:
+
+const CARBON_CONTRACT =
+"0x123...";
+
+*/
+
+const CARBON_CONTRACT = "";
+
+
+/* =================================
+ABI
+================================= */
+
+const ABI = [
+
+"function registerFarm(string,string,string,string,string) returns(uint256)",
+
+"function verifyFarm(uint256,uint256,string)",
+
+"function mintCarbonNFT(uint256,uint256,string,string) returns(uint256)",
+
+"function retireCarbonNFT(uint256)"
+
+];
+
+
+/* =================================
+CO2 DEMO COEFFICIENTS
+================================= */
+
+const COEFFICIENTS = {
+
+Bamboo:1200,
+
+Coconut:600,
+
+Rubber:900,
+
+Mango:700,
+
+Banana:250,
+
+Coffee:400,
+
+Cocoa:500,
+
+Rice:100,
+
+Spices:200,
+
+Agroforestry:800
+
+};
+
+
+/* =================================
+WALLET
+================================= */
+
+let provider = null;
+
+let signer = null;
+
+let wallet = null;
+
+
+/* =================================
+PAGE
+================================= */
+
+function openPage(id){
+
+document
+.querySelectorAll(".page")
+.forEach(
+page =>
+page.classList.remove("active")
+);
+
+const target =
+document.getElementById(id);
+
+if(target){
+
+target.classList.add("active");
+
+}
+
+render();
+
+}
+
+
+/* =================================
+STORAGE
+================================= */
+
+function getData(){
+
+return JSON.parse(
+
+localStorage.getItem(
+"AJJRA_DATABASE"
+)
+
+|| "[]"
+
+);
+
+}
+
+
+function saveData(data){
+
+localStorage.setItem(
+
+"AJJRA_DATABASE",
+
+JSON.stringify(data)
+
+);
+
+render();
+
+}
+
+
+/* =================================
+GPS
+================================= */
+
+function getGPS(){
+
+if(
+!navigator.geolocation
+){
+
+alert(
+"ഈ browser GPS support ചെയ്യുന്നില്ല."
+);
+
+return;
+
+}
+
+
+navigator.geolocation.getCurrentPosition(
+
+position => {
+
+document
+.getElementById(
+"latitude"
+)
+.value =
+position.coords.latitude;
+
+document
+.getElementById(
+"longitude"
+)
+.value =
+position.coords.longitude;
+
+alert(
+"GPS location added."
+);
+
+},
+
+error => {
+
+alert(
+"Location permission അനുവദിക്കുക."
+);
+
+}
+
+);
+
+}
+
+
+/* =================================
+PHOTO
+================================= */
+
+function previewFarmPhoto(event){
+
+const file =
+event.target.files[0];
+
+if(!file){
+
+return;
+
+}
+
+const image =
+document.getElementById(
+"farmPhotoPreview"
+);
+
+image.src =
+URL.createObjectURL(file);
+
+image.style.display =
+"block";
+
+}
+
+
+/* =================================
+CARBON
+================================= */
+
+function calculateCarbon(){
+
+const crop =
+document
+.getElementById(
+"carbonCrop"
+)
+.value;
+
+const area =
+Number(
+document
+.getElementById(
+"carbonArea"
+)
+.value || 0
+);
+
+const plants =
+Number(
+document
+.getElementById(
+"carbonPlants"
+)
+.value || 0
+);
+
+const coefficient =
+COEFFICIENTS[crop] || 0;
+
+const densityFactor =
+Math.min(
+1.25,
+Math.max(
+0.75,
+plants / 160
+)
+);
+
+const carbon =
+area *
+coefficient *
+densityFactor;
+
+document
+.getElementById(
+"carbonResult"
+)
+.innerText =
+carbon.toFixed(2)
++
+" kg CO₂e/year";
+
+return carbon;
+
+}
+
+
+/* =================================
+SAVE CARBON
+================================= */
+
+function saveCarbonRecord(){
+
+const carbon =
+calculateCarbon();
+
+const data =
+getData();
+
+data.push({
+
+type:"carbon",
+
+crop:
+document
+.getElementById(
+"carbonCrop"
+).value,
+
+area:
+document
+.getElementById(
+"carbonArea"
+).value,
+
+plants:
+document
+.getElementById(
+"carbonPlants"
+).value,
+
+estimatedCarbon:
+carbon,
+
+status:
+"ESTIMATED",
+
+createdAt:
+new Date().toISOString()
+
+});
+
+saveData(data);
+
+alert(
+"Carbon estimate saved."
+);
+
+}
+
+
+/* =================================
+REGISTER FARM
+================================= */
+
+async function registerFarm(){
+
+const crop =
+document
+.getElementById(
+"crop"
+).value;
+
+const area =
+Number(
+document
+.getElementById(
+"farmArea"
+).value
+);
+
+const plants =
+Number(
+document
+.getElementById(
+"plantCount"
+).value || 0
+);
+
+const date =
+document
+.getElementById(
+"plantingDate"
+).value;
+
+const lat =
+document
+.getElementById(
+"latitude"
+).value;
+
+const lng =
+document
+.getElementById(
+"longitude"
+).value;
+
+const notes =
+document
+.getElementById(
+"farmNotes"
+).value;
+
+
+if(
+!area ||
+area <= 0
+){
+
+alert(
+"Farm area നൽകുക."
+);
+
+return;
+
+}
+
+
+const coefficient =
+COEFFICIENTS[crop];
+
+const estimatedCarbon =
+area *
+coefficient *
+Math.min(
+1.25,
+Math.max(
+0.75,
+plants / 160
+)
+);
+
+
+const farm = {
+
+type:"farm",
+
+id:
+Date.now(),
+
+crop:crop,
+
+area:area,
+
+plants:plants,
+
+plantingDate:date,
+
+latitude:lat,
+
+longitude:lng,
+
+notes:notes,
+
+estimatedCarbon:
+estimatedCarbon,
+
+status:
+"SUBMITTED",
+
+createdAt:
+new Date().toISOString()
+
+};
+
+
+const data =
+getData();
+
+data.push(farm);
+
+saveData(data);
+
+
+document
+.getElementById(
+"farmMessage"
+)
+.innerHTML = `
+
+<div class="success">
+
+<b>🌱 Farm Registered</b>
+
+<br><br>
+
+Crop:
+${crop}
+
+<br>
+
+Area:
+${area} hectare
+
+<br>
+
+Plants:
+${plants}
+
+<br>
+
+Estimated Carbon:
+${estimatedCarbon.toFixed(2)}
+kg CO₂e/year
+
+<br><br>
+
+Status:
+SUBMITTED
+
+</div>
+
+`;
+
+
+/* OPTIONAL BLOCKCHAIN */
+
+if(
+signer &&
+CARBON_CONTRACT
+){
+
+try{
+
+const contract =
+new ethers.Contract(
+CARBON_CONTRACT,
+ABI,
+signer
+);
+
+const tx =
+await contract.registerFarm(
+
+crop,
+
+String(area),
+
+date || "",
+
+lat + "," + lng,
+
+""
+
+);
+
+document
+.getElementById(
+"farmMessage"
+)
+.innerHTML += `
+
+<div class="success">
+
+Blockchain TX:
+
+<br>
+
+${tx.hash}
+
+</div>
+
+`;
+
+await tx.wait();
+
+}
+
+catch(error){
+
+console.log(error);
+
+}
+
+}
+
+}
+
+
+/* =================================
+VERIFICATION
+================================= */
+
+function verifyFarm(){
+
+const farmId =
+Number(
+document
+.getElementById(
+"verifyFarmId"
+).value
+);
+
+const carbon =
+Number(
+document
+.getElementById(
+"verifyCarbon"
+).value
+);
+
+const verificationId =
+document
+.getElementById(
+"verifyId"
+).value;
+
+const verifier =
+document
+.getElementById(
+"verifierName"
+).value;
+
+
+if(
+!farmId ||
+!carbon ||
+!verificationId
+){
+
+alert(
+"Verification details fill ചെയ്യുക."
+);
+
+return;
+
+}
+
+
+const data =
+getData();
+
+const farm =
+data.find(
+x =>
+x.type === "farm"
+&&
+x.id === farmId
+);
+
+
+if(!farm){
+
+/*
+Allow manual blockchain Farm ID
+if local record isn't available.
+*/
+
+}
+
+
+const record = {
+
+type:"verified",
+
+farmId:farmId,
+
+verifiedCarbon:carbon,
+
+verificationId:
+verificationId,
+
+verifier:
+verifier,
+
+status:
+"VERIFIED",
+
+createdAt:
+new Date().toISOString()
+
+};
+
+
+data.push(record);
+
+saveData(data);
+
+
+document
+.getElementById(
+"verificationResult"
+)
+.innerHTML = `
+
+<div class="success">
+
+🟢 <b>Verification Recorded</b>
+
+<br><br>
+
+Farm ID:
+${farmId}
+
+<br>
+
+Verified:
+${carbon} kg CO₂e
+
+<br>
+
+Verification ID:
+${verificationId}
+
+</div>
+
+`;
+
+}
+
+
+/* =================================
+MST NETWORK
+================================= */
+
+async function addMSTNetwork(){
+
+if(!window.ethereum){
+
+alert(
+"MetaMask / compatible wallet install ചെയ്യുക."
+);
+
+return;
+
+}
+
+
+try{
+
+await window.ethereum.request({
+
+method:
+"wallet_addEthereumChain",
+
+params:[{
+
+chainId:
+MST.chainIdHex,
+
+chainName:
+MST.chainName,
+
+nativeCurrency:{
+
+name:"MSTC",
+
+symbol:
+MST.symbol,
+
+decimals:18
+
+},
+
+rpcUrls:[
+MST.rpc
+],
+
+blockExplorerUrls:[
+MST.explorer
+]
+
+}]
+
+});
+
+alert(
+"MST Testnet added."
+);
+
+}
+
+catch(error){
+
+alert(
+error.message
+);
+
+}
+
+}
+
+
+/* =================================
+CONNECT WALLET
+================================= */
+
+async function connectWallet(){
+
+try{
+
+if(!window.ethereum){
+
+throw new Error(
+"MetaMask install ചെയ്യുക."
+);
+
+}
+
+
+provider =
+new ethers.BrowserProvider(
+window.ethereum
+);
+
+
+await provider.send(
+"eth_requestAccounts",
+[]
+);
+
+
+const network =
+await provider.getNetwork();
+
+
+if(
+Number(network.chainId)
+!==
+MST.chainId
+){
+
+await addMSTNetwork();
+
+}
+
+
+signer =
+await provider.getSigner();
+
+wallet =
+await signer.getAddress();
+
+
+document
+.getElementById(
+"walletAddress"
+)
+.innerText =
+wallet;
+
+}
+
+catch(error){
+
+alert(
+error.shortMessage ||
+error.message
+);
+
+}
+
+}
+
+
+/* =================================
+NFT
+================================= */
+
+async function mintNFT(){
+
+try{
+
+if(!signer){
+
+await connectWallet();
+
+}
+
+
+if(
+!CARBON_CONTRACT
+){
+
+throw new Error(
+"CARBON_CONTRACT address ചേർക്കുക."
+);
+
+}
+
+
+const farmId =
+Number(
+document
+.getElementById(
+"nftFarmId"
+).value
+);
+
+const carbon =
+Number(
+document
+.getElementById(
+"nftCarbon"
+).value
+);
+
+const verificationId =
+document
+.getElementById(
+"nftVerificationId"
+).value
+.trim();
+
+const cid =
+document
+.getElementById(
+"nftCID"
+).value
+.trim();
+
+
+if(
+!carbon ||
+!verificationId ||
+!cid
+){
+
+throw new Error(
+"NFT വിവരങ്ങൾ പൂർണ്ണമായി നൽകുക."
+);
+
+}
+
+
+const contract =
+new ethers.Contract(
+
+CARBON_CONTRACT,
+
+ABI,
+
+signer
+
+);
+
+
+const tx =
+await contract.mintCarbonNFT(
+
+farmId,
+
+Math.round(carbon),
+
+verificationId,
+
+cid
+
+);
+
+
+document
+.getElementById(
+"nftResult"
+)
+.innerHTML = `
+
+<div class="result">
+
+Transaction submitted:
+
+<br><br>
+
+${tx.hash}
+
+</div>
+
+`;
+
+
+await tx.wait();
+
+
+const data =
+getData();
+
+
+data.push({
+
+type:"nft",
+
+tokenId:
+"Pending",
+
+farmId:
+farmId,
+
+carbon:
+carbon,
+
+verificationId:
+verificationId,
+
+metadataCID:
+cid,
+
+txHash:
+tx.hash,
+
+status:
+"MINTED",
+
+createdAt:
+new Date().toISOString()
+
+});
+
+
+saveData(data);
+
+
+document
+.getElementById(
+"nftResult"
+)
+.innerHTML = `
+
+<div class="success">
+
+🎨 <b>Carbon NFT Minted</b>
+
+<br><br>
+
+TX:
+
+${tx.hash}
+
+</div>
+
+`;
+
+}
+
+catch(error){
+
+document
+.getElementById(
+"nftResult"
+)
+.innerHTML = `
+
+<div class="danger">
+
+${error.shortMessage || error.message}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =================================
+RETIRE
+================================= */
+
+async function retireNFT(){
+
+try{
+
+if(!signer){
+
+await connectWallet();
+
+}
+
+
+if(!CARBON_CONTRACT){
+
+throw new Error(
+"Contract address ചേർക്കുക."
+);
+
+}
+
+
+const tokenId =
+Number(
+document
+.getElementById(
+"retireTokenId"
+).value
+);
+
+
+const contract =
+new ethers.Contract(
+
+CARBON_CONTRACT,
+
+ABI,
+
+signer
+
+);
+
+
+const tx =
+await contract.retireCarbonNFT(
+tokenId
+);
+
+
+await tx.wait();
+
+
+document
+.getElementById(
+"retireResult"
+)
+.innerHTML = `
+
+<div class="success">
+
+♻️ Carbon NFT retired.
+
+<br><br>
+
+TX:
+${tx.hash}
+
+</div>
+
+`;
+
+}
+
+catch(error){
+
+document
+.getElementById(
+"retireResult"
+)
+.innerHTML = `
+
+<div class="danger">
+
+${error.shortMessage || error.message}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =================================
+IPFS
+================================= */
+
+function openIPFS(){
+
+const cid =
+document
+.getElementById(
+"ipfsCID"
+)
+.value
+.trim();
+
+
+if(!cid){
+
+alert(
+"IPFS CID നൽകുക."
+);
+
+return;
+
+}
+
+
+const clean =
+cid
+.replace(
+"ipfs://",
+""
+);
+
+
+window.open(
+
+"https://ipfs.io/ipfs/"
++
+clean,
+
+"_blank"
+
+);
+
+}
+
+
+/* =================================
+RENDER
+================================= */
+
+function render(){
+
+const data =
+getData();
+
+
+const farms =
+data.filter(
+x=>x.type==="farm"
+);
+
+
+const carbonRecords =
+data.filter(
+x=>x.type==="carbon"
+);
+
+
+const verified =
+data.filter(
+x=>x.type==="verified"
+);
+
+
+const nfts =
+data.filter(
+x=>x.type==="nft"
+);
+
+
+const totalCarbon =
+carbonRecords
+.reduce(
+(sum,x)=>
+sum +
+Number(
+x.estimatedCarbon || 0
+),
+0
+);
+
+
+document
+.getElementById(
+"dashboardFarms"
+)
+.innerText =
+farms.length;
+
+
+document
+.getElementById(
+"dashboardCarbon"
+)
+.innerText =
+totalCarbon.toFixed(2)
++
+" kg";
+
+
+document
+.getElementById(
+"dashboardCredits"
+)
+.innerText =
+verified
+.reduce(
+(sum,x)=>
+sum +
+Number(
+x.verifiedCarbon || 0
+),
+0
+)
+.toFixed(2)
++
+" kg";
+
+
+document
+.getElementById(
+"dashboardNFT"
+)
+.innerText =
+nfts.length;
+
+
+/* FARM LIST */
+
+const farmList =
+document.getElementById(
+"farmList"
+);
+
+
+if(
+farms.length === 0
+){
+
+farmList.innerHTML =
+"No farms registered.";
+
+}
+
+else{
+
+farmList.innerHTML =
+farms.map(
+farm => `
+
+<div class="nft">
+
+<div class="nft-title">
+
+🌱 ${farm.crop}
+
+</div>
+
+<div class="small">
+
+Farm ID:
+${farm.id}
+
+<br>
+
+Area:
+${farm.area} ha
+
+<br>
+
+Plants:
+${farm.plants}
+
+<br>
+
+Estimated:
+${Number(
+farm.estimatedCarbon
+).toFixed(2)}
+kg CO₂e
+
+</div>
+
+<span class="badge">
+
+${farm.status}
+
+</span>
+
+</div>
+
+`
+).join("");
+
+}
+
+
+/* CREDIT LIST */
+
+const creditList =
+document.getElementById(
+"creditList"
+);
+
+
+if(
+verified.length === 0
+){
+
+creditList.innerHTML =
+"No verified credits.";
+
+}
+
+else{
+
+creditList.innerHTML =
+verified.map(
+credit => `
+
+<div class="nft">
+
+<div class="nft-title">
+
+🪙 Carbon Credit
+
+</div>
+
+Verified:
+${credit.verifiedCarbon}
+kg CO₂e
+
+<br>
+
+Verification:
+${credit.verificationId}
+
+<br>
+
+<span class="badge">
+VERIFIED
+</span>
+
+</div>
+
+`
+).join("");
+
+}
+
+
+/* NFT LIST */
+
+const nftList =
+document.getElementById(
+"nftList"
+);
+
+
+if(
+nfts.length === 0
+){
+
+nftList.innerHTML =
+"No NFTs.";
+
+}
+
+else{
+
+nftList.innerHTML =
+nfts.map(
+nft => `
+
+<div class="nft">
+
+<div class="nft-title">
+
+🎨 Agri Carbon NFT
+
+</div>
+
+Farm:
+${nft.farmId}
+
+<br>
+
+Carbon:
+${nft.carbon} kg
+
+<br>
+
+Verification:
+${nft.verificationId}
+
+<br>
+
+<a
+href="${MST.explorer}/tx/${nft.txHash}"
+target="_blank">
+
+View Blockchain Transaction
+
+</a>
+
+</div>
+
+`
+).join("");
+
+}
+
+
+/* MARKETPLACE */
+
+const market =
+document.getElementById(
+"marketList"
+);
+
+
+if(
+verified.length === 0
+){
+
+market.innerHTML =
+"No verified credits available.";
+
+}
+
+else{
+
+market.innerHTML =
+verified.map(
+credit => `
+
+<div class="market-item">
+
+<div class="nft-title">
+
+🌱 AJJRA Carbon Credit
+
+</div>
+
+<p>
+
+Verified Carbon:
+<b>
+${credit.verifiedCarbon} kg CO₂e
+</b>
+
+</p>
+
+<p>
+
+Verification:
+${credit.verificationId}
+
+</p>
+
+<div class="price">
+
+Verified Asset
+
+</div>
+
+<button
+class="btn light"
+onclick="alert('Marketplace trading requires a compliant verified-credit system.')">
+
+View
+
+</button>
+
+</div>
+
+`
+).join("");
+
+}
+
+
+/* ALL RECORDS */
+
+document
+.getElementById(
+"allRecords"
+)
+.innerText =
+JSON.stringify(
+data,
+null,
+2
+);
+
+}
+
+
+/* =================================
+START
+================================= */
+
+calculateCarbon();
+
+render();
+
+</script>
+
+</body>
+</html>
