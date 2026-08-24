@@ -1,0 +1,4113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<title>AJJRA | Agri Carbon Web3</title>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+
+<style>
+
+/* =====================================================
+   AJJRA WEB3 DESIGN SYSTEM
+===================================================== */
+
+:root{
+    --bg:#06120c;
+    --bg2:#091b12;
+    --card:#0c2116;
+    --card2:#10291b;
+    --green:#19d873;
+    --green2:#08a94e;
+    --lime:#9cffc9;
+    --text:#f3fff7;
+    --muted:#8ea99a;
+    --border:#1b3a28;
+    --danger:#ff5c68;
+    --warning:#ffc857;
+    --blue:#4da3ff;
+    --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+    background:
+    radial-gradient(
+        circle at 10% 0%,
+        rgba(25,216,115,.12),
+        transparent 25%
+    ),
+    radial-gradient(
+        circle at 90% 20%,
+        rgba(77,163,255,.08),
+        transparent 25%
+    ),
+    var(--bg);
+
+    color:var(--text);
+    min-height:100vh;
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+::-webkit-scrollbar{
+    width:7px;
+}
+
+::-webkit-scrollbar-track{
+    background:var(--bg);
+}
+
+::-webkit-scrollbar-thumb{
+    background:#1c4c30;
+    border-radius:20px;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    backdrop-filter:blur(20px);
+
+    background:
+    rgba(6,18,12,.82);
+
+    border-bottom:
+    1px solid rgba(255,255,255,.06);
+
+    padding:
+    14px 5%;
+}
+
+.headerInner{
+    max-width:1400px;
+    margin:auto;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.logoBox{
+    width:45px;
+    height:45px;
+
+    border-radius:14px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:24px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--green),
+        var(--green2)
+    );
+
+    box-shadow:
+    0 0 30px rgba(25,216,115,.25);
+}
+
+.logoText{
+    font-weight:1000;
+    letter-spacing:3px;
+    font-size:21px;
+}
+
+.logoSub{
+    color:var(--muted);
+    font-size:9px;
+    letter-spacing:1.4px;
+}
+
+.nav{
+    display:flex;
+    align-items:center;
+    gap:5px;
+}
+
+.nav button{
+    background:transparent;
+    border:0;
+    color:#b9cabe;
+    padding:10px 13px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:700;
+}
+
+.nav button:hover{
+    background:#ffffff09;
+    color:white;
+}
+
+.connectBtn{
+    border:1px solid #2be17f !important;
+
+    background:
+    rgba(25,216,115,.12) !important;
+
+    color:#75ffb1 !important;
+}
+
+/* =====================================================
+   MOBILE NAV
+===================================================== */
+
+.mobileNav{
+    display:none;
+
+    position:fixed;
+    bottom:12px;
+    left:12px;
+    right:12px;
+
+    z-index:2000;
+
+    background:
+    rgba(8,28,18,.94);
+
+    backdrop-filter:blur(20px);
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    padding:8px;
+
+    box-shadow:var(--shadow);
+}
+
+.mobileNav button{
+    flex:1;
+    border:0;
+    background:transparent;
+    color:#789184;
+    padding:8px 3px;
+    font-size:10px;
+}
+
+.mobileNav button.active{
+    color:var(--green);
+}
+
+.mobileNavIcon{
+    display:block;
+    font-size:19px;
+    margin-bottom:2px;
+}
+
+/* =====================================================
+   MAIN
+===================================================== */
+
+main{
+    max-width:1400px;
+    margin:auto;
+    padding:35px 5% 100px;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+    position:relative;
+
+    min-height:560px;
+
+    display:grid;
+
+    grid-template-columns:
+    1.15fr .85fr;
+
+    gap:50px;
+
+    align-items:center;
+
+    padding:
+    45px 0 70px;
+}
+
+.heroGlow{
+    position:absolute;
+    width:500px;
+    height:500px;
+
+    border-radius:50%;
+
+    background:
+    radial-gradient(
+        circle,
+        rgba(25,216,115,.18),
+        transparent 65%
+    );
+
+    filter:blur(10px);
+
+    pointer-events:none;
+}
+
+.heroContent{
+    position:relative;
+    z-index:2;
+}
+
+.badge{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+
+    padding:8px 12px;
+
+    border-radius:30px;
+
+    border:
+    1px solid rgba(25,216,115,.25);
+
+    background:
+    rgba(25,216,115,.08);
+
+    color:#82ffb7;
+
+    font-size:12px;
+    font-weight:800;
+
+    margin-bottom:18px;
+}
+
+.liveDot{
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--green);
+
+    box-shadow:
+    0 0 12px var(--green);
+}
+
+.hero h1{
+    font-size:
+    clamp(42px,6vw,78px);
+
+    line-height:1;
+
+    letter-spacing:-4px;
+
+    max-width:850px;
+}
+
+.gradientText{
+    background:
+    linear-gradient(
+        90deg,
+        #ffffff,
+        #7dffb3,
+        #19d873
+    );
+
+    -webkit-background-clip:text;
+    background-clip:text;
+
+    color:transparent;
+}
+
+.heroDescription{
+    color:var(--muted);
+
+    font-size:17px;
+
+    line-height:1.8;
+
+    max-width:650px;
+
+    margin-top:24px;
+}
+
+.heroActions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+
+    margin-top:30px;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.btn{
+    border:0;
+    border-radius:13px;
+
+    padding:13px 18px;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    font-size:14px;
+}
+
+.btn:hover{
+    transform:translateY(-2px);
+}
+
+.btnPrimary{
+    color:#02130a;
+
+    background:
+    linear-gradient(
+        135deg,
+        #42f494,
+        #0bc15b
+    );
+
+    box-shadow:
+    0 10px 30px rgba(25,216,115,.18);
+}
+
+.btnSecondary{
+    color:white;
+
+    background:#ffffff08;
+
+    border:
+    1px solid var(--border);
+}
+
+.btnDanger{
+    color:white;
+    background:#ff3f4d;
+}
+
+.btnBlue{
+    background:#247ce8;
+    color:white;
+}
+
+.full{
+    width:100%;
+}
+
+/* =====================================================
+   WEB3 CARD
+===================================================== */
+
+.web3Card{
+    position:relative;
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(18,48,30,.9),
+        rgba(7,25,15,.95)
+    );
+
+    border:
+    1px solid rgba(118,255,169,.12);
+
+    border-radius:25px;
+
+    box-shadow:var(--shadow);
+
+    overflow:hidden;
+}
+
+.web3Card::before{
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+    linear-gradient(
+        120deg,
+        transparent,
+        rgba(25,216,115,.04),
+        transparent
+    );
+
+    pointer-events:none;
+}
+
+.walletPanel{
+    padding:25px;
+}
+
+.walletPanelTop{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.walletIcon{
+    width:52px;
+    height:52px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:16px;
+
+    background:#ffffff08;
+
+    font-size:25px;
+}
+
+.networkBadge{
+    color:#7dffb3;
+    font-size:11px;
+    font-weight:800;
+
+    padding:7px 10px;
+
+    border-radius:20px;
+
+    background:#19d87312;
+}
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats{
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    gap:15px;
+
+    margin-top:20px;
+}
+
+.statCard{
+    background:
+    rgba(255,255,255,.025);
+
+    border:
+    1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:20px;
+}
+
+.statIcon{
+    font-size:22px;
+}
+
+.statLabel{
+    color:var(--muted);
+    font-size:12px;
+    margin-top:12px;
+}
+
+.statValue{
+    font-size:27px;
+    font-weight:1000;
+    margin-top:4px;
+}
+
+/* =====================================================
+   SECTION
+===================================================== */
+
+.section{
+    padding:65px 0 0;
+}
+
+.sectionHead{
+    display:flex;
+    justify-content:space-between;
+    align-items:end;
+
+    gap:20px;
+
+    margin-bottom:25px;
+}
+
+.sectionHead h2{
+    font-size:32px;
+    letter-spacing:-1px;
+}
+
+.sectionHead p{
+    color:var(--muted);
+    margin-top:7px;
+}
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:16px;
+}
+
+/* =====================================================
+   FEATURE CARD
+===================================================== */
+
+.feature{
+    padding:24px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #0c2116,
+        #09180f
+    );
+
+    border:
+    1px solid var(--border);
+
+    border-radius:20px;
+
+    transition:.25s;
+}
+
+.feature:hover{
+    transform:translateY(-5px);
+
+    border-color:
+    rgba(25,216,115,.3);
+}
+
+.featureIcon{
+    width:50px;
+    height:50px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#19d8730d;
+
+    border-radius:15px;
+
+    font-size:25px;
+
+    margin-bottom:18px;
+}
+
+.feature h3{
+    font-size:17px;
+}
+
+.feature p{
+    color:var(--muted);
+
+    font-size:13px;
+
+    line-height:1.7;
+
+    margin-top:8px;
+}
+
+/* =====================================================
+   WORKFLOW
+===================================================== */
+
+.workflow{
+    display:grid;
+
+    grid-template-columns:
+    repeat(8,1fr);
+
+    gap:8px;
+}
+
+.step{
+    text-align:center;
+
+    padding:18px 5px;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:15px;
+
+    background:#ffffff03;
+}
+
+.stepNumber{
+    width:30px;
+    height:30px;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+
+    color:#02130a;
+
+    background:var(--green);
+
+    font-weight:1000;
+
+    font-size:12px;
+}
+
+.stepIcon{
+    font-size:23px;
+    margin:10px 0 6px;
+}
+
+.stepText{
+    font-size:10px;
+    color:#b9cabe;
+}
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.formCard{
+    max-width:850px;
+
+    margin:auto;
+
+    padding:28px;
+
+    background:
+    #0b1f14;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:24px;
+}
+
+.formGrid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:15px;
+}
+
+.field{
+    margin-bottom:5px;
+}
+
+.field.fullField{
+    grid-column:1/-1;
+}
+
+.field label{
+    display:block;
+
+    color:#b9cabe;
+
+    font-size:12px;
+
+    font-weight:800;
+
+    margin-bottom:7px;
+}
+
+.field input,
+.field select,
+.field textarea{
+    width:100%;
+
+    border:
+    1px solid var(--border);
+
+    background:
+    #07150d;
+
+    color:white;
+
+    border-radius:12px;
+
+    padding:13px;
+
+    outline:none;
+
+    font-size:14px;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus{
+    border-color:var(--green);
+}
+
+.field textarea{
+    min-height:100px;
+    resize:vertical;
+}
+
+input[type=file]{
+    padding:10px;
+}
+
+/* =====================================================
+   CALCULATOR
+===================================================== */
+
+.calcLayout{
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:18px;
+}
+
+.calcResult{
+    min-height:100%;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    background:
+    radial-gradient(
+        circle at center,
+        #19d87315,
+        transparent 65%
+    );
+
+    border:
+    1px solid #19d87325;
+
+    border-radius:24px;
+
+    padding:30px;
+}
+
+.calcNumber{
+    font-size:
+    clamp(38px,5vw,62px);
+
+    font-weight:1000;
+
+    color:#72ffad;
+
+    margin:12px 0;
+}
+
+.calcUnit{
+    color:var(--muted);
+}
+
+/* =====================================================
+   NFT
+===================================================== */
+
+.nftGrid{
+    display:grid;
+
+    grid-template-columns:
+    repeat(3,1fr);
+
+    gap:18px;
+}
+
+.nftCard{
+    background:#0b2115;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:22px;
+
+    overflow:hidden;
+}
+
+.nftVisual{
+    height:230px;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    position:relative;
+
+    background:
+    radial-gradient(
+        circle at 30% 20%,
+        #5dff9c,
+        transparent 10%
+    ),
+    linear-gradient(
+        135deg,
+        #063c20,
+        #16a653
+    );
+}
+
+.nftVisual::after{
+    content:"AJJRA";
+
+    position:absolute;
+
+    bottom:12px;
+    right:15px;
+
+    font-size:11px;
+
+    font-weight:1000;
+
+    letter-spacing:3px;
+
+    opacity:.6;
+}
+
+.nftEmoji{
+    font-size:80px;
+
+    filter:
+    drop-shadow(
+        0 15px 25px #0008
+    );
+}
+
+.nftBody{
+    padding:20px;
+}
+
+.nftTitle{
+    font-weight:1000;
+    font-size:18px;
+}
+
+.nftMeta{
+    display:flex;
+    justify-content:space-between;
+
+    padding:11px 0;
+
+    border-bottom:
+    1px solid var(--border);
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+.nftMeta strong{
+    color:white;
+}
+
+/* =====================================================
+   WALLET
+===================================================== */
+
+.walletSection{
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:18px;
+}
+
+.walletMain{
+    padding:30px;
+}
+
+.walletAddress{
+    word-break:break-all;
+
+    padding:15px;
+
+    margin:20px 0;
+
+    background:#00000030;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:14px;
+
+    color:#7dffb3;
+
+    font-family:monospace;
+
+    font-size:13px;
+}
+
+.networkInfo{
+    padding:25px;
+}
+
+.infoRow{
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:12px 0;
+
+    border-bottom:
+    1px solid var(--border);
+
+    font-size:13px;
+}
+
+.infoRow span:first-child{
+    color:var(--muted);
+}
+
+/* =====================================================
+   MARKET
+===================================================== */
+
+.marketCard{
+    padding:22px;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:20px;
+
+    background:#0b2115;
+}
+
+.marketTop{
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+}
+
+.marketIcon{
+    width:48px;
+    height:48px;
+
+    border-radius:15px;
+
+    background:#19d87315;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:23px;
+}
+
+.marketTitle{
+    font-weight:900;
+}
+
+.marketSub{
+    color:var(--muted);
+    font-size:11px;
+}
+
+.marketValue{
+    font-size:25px;
+    font-weight:1000;
+
+    color:#7dffb3;
+
+    margin:22px 0;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status{
+    margin-top:15px;
+
+    padding:13px;
+
+    border-radius:12px;
+
+    font-size:13px;
+}
+
+.status.success{
+    background:#19d87312;
+    border:1px solid #19d87325;
+    color:#8dffba;
+}
+
+.status.error{
+    background:#ff4d5d12;
+    border:1px solid #ff4d5d25;
+    color:#ff929b;
+}
+
+.status.warning{
+    background:#ffc85712;
+    border:1px solid #ffc85725;
+    color:#ffd976;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+.footer{
+    border-top:
+    1px solid var(--border);
+
+    padding:40px 5%;
+
+    text-align:center;
+
+    color:var(--muted);
+
+    font-size:12px;
+}
+
+.footerLogo{
+    color:white;
+    font-weight:1000;
+    letter-spacing:4px;
+    font-size:20px;
+    margin-bottom:7px;
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+    position:fixed;
+
+    inset:0;
+
+    z-index:5000;
+
+    background:#0009;
+
+    backdrop-filter:blur(10px);
+
+    display:none;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modalBox{
+    width:100%;
+    max-width:450px;
+
+    background:#0b2115;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:25px;
+
+    padding:25px;
+
+    box-shadow:var(--shadow);
+}
+
+.modalHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    border:0;
+    background:#ffffff0b;
+    color:white;
+    width:35px;
+    height:35px;
+    border-radius:10px;
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+.toast{
+    position:fixed;
+
+    right:20px;
+    bottom:20px;
+
+    z-index:6000;
+
+    background:#0d2819;
+
+    border:
+    1px solid #2c573d;
+
+    padding:15px 18px;
+
+    border-radius:14px;
+
+    box-shadow:var(--shadow);
+
+    transform:
+    translateY(120px);
+
+    opacity:0;
+
+    transition:.3s;
+
+    max-width:350px;
+
+    font-size:13px;
+}
+
+.toast.show{
+    transform:translateY(0);
+    opacity:1;
+}
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media(max-width:1000px){
+
+    .hero{
+        grid-template-columns:1fr;
+    }
+
+    .workflow{
+        grid-template-columns:
+        repeat(4,1fr);
+    }
+
+    .stats{
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .grid,
+    .nftGrid{
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .walletSection,
+    .calcLayout{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:700px){
+
+    .header{
+        position:relative;
+    }
+
+    .nav{
+        display:none;
+    }
+
+    .mobileNav{
+        display:flex;
+    }
+
+    main{
+        padding:
+        20px 15px 110px;
+    }
+
+    .hero{
+        min-height:auto;
+        padding:
+        45px 0 50px;
+    }
+
+    .hero h1{
+        letter-spacing:-2px;
+    }
+
+    .heroDescription{
+        font-size:15px;
+    }
+
+    .stats{
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .grid,
+    .nftGrid{
+        grid-template-columns:1fr;
+    }
+
+    .workflow{
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .formGrid{
+        grid-template-columns:1fr;
+    }
+
+    .field.fullField{
+        grid-column:auto;
+    }
+
+    .sectionHead{
+        display:block;
+    }
+
+    .sectionHead h2{
+        font-size:26px;
+    }
+
+    .logoSub{
+        display:none;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+HEADER
+===================================================== -->
+
+<header class="header">
+
+<div class="headerInner">
+
+<div class="brand">
+
+<div class="logoBox">
+🌱
+</div>
+
+<div>
+
+<div class="logoText">
+AJJRA
+</div>
+
+<div class="logoSub">
+AGRI • CARBON • WEB3
+</div>
+
+</div>
+
+</div>
+
+<nav class="nav">
+
+<button onclick="scrollToID('home')">
+Home
+</button>
+
+<button onclick="scrollToID('farm')">
+Farm
+</button>
+
+<button onclick="scrollToID('carbon')">
+Carbon
+</button>
+
+<button onclick="scrollToID('nft')">
+NFT
+</button>
+
+<button onclick="scrollToID('market')">
+Market
+</button>
+
+<button
+class="connectBtn"
+onclick="connectWallet()">
+
+👛 Connect
+
+</button>
+
+</nav>
+
+</div>
+
+</header>
+
+
+<!-- =====================================================
+MOBILE NAV
+===================================================== -->
+
+<div class="mobileNav">
+
+<button onclick="scrollToID('home')">
+
+<span class="mobileNavIcon">
+🏠
+</span>
+
+Home
+
+</button>
+
+<button onclick="scrollToID('farm')">
+
+<span class="mobileNavIcon">
+🌱
+</span>
+
+Farm
+
+</button>
+
+<button onclick="scrollToID('carbon')">
+
+<span class="mobileNavIcon">
+📊
+</span>
+
+Carbon
+
+</button>
+
+<button onclick="scrollToID('nft')">
+
+<span class="mobileNavIcon">
+🎨
+</span>
+
+NFT
+
+</button>
+
+<button onclick="connectWallet()">
+
+<span class="mobileNavIcon">
+👛
+</span>
+
+Wallet
+
+</button>
+
+</div>
+
+
+<main>
+
+
+<!-- =====================================================
+HERO
+===================================================== -->
+
+<section class="hero" id="home">
+
+<div class="heroGlow"></div>
+
+<div class="heroContent">
+
+<div class="badge">
+
+<span class="liveDot"></span>
+
+AJJRA WEB3 AGRI PLATFORM
+
+</div>
+
+<h1>
+
+Grow Farms.
+<br>
+
+Create
+<span class="gradientText">
+Carbon Assets.
+</span>
+
+</h1>
+
+<p class="heroDescription">
+
+AJJRA brings agriculture, carbon
+measurement, verification, NFTs,
+IPFS and MST blockchain together
+in one user-friendly Web3 platform.
+
+</p>
+
+<div class="heroActions">
+
+<button
+class="btn btnPrimary"
+onclick="scrollToID('farm')">
+
+🌱 Start Your Farm
+
+</button>
+
+<button
+class="btn btnSecondary"
+onclick="scrollToID('carbon')">
+
+📊 Calculate Carbon
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- WALLET CARD -->
+
+<div class="web3Card walletPanel">
+
+<div class="walletPanelTop">
+
+<div class="walletIcon">
+👛
+</div>
+
+<div class="networkBadge">
+● MST MAINNET
+</div>
+
+</div>
+
+<h2 style="margin-top:20px;">
+Your Web3 Wallet
+</h2>
+
+<p style="
+color:var(--muted);
+font-size:13px;
+margin-top:8px;
+line-height:1.6;
+">
+
+Connect your EVM wallet to
+interact with AJJRA.
+
+</p>
+
+<div
+class="walletAddress"
+id="heroWallet">
+
+Not connected
+
+</div>
+
+<button
+class="btn btnPrimary full"
+onclick="connectWallet()">
+
+🔗 Connect Wallet
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+DASHBOARD
+===================================================== -->
+
+<section class="section">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+AJJRA Dashboard
+</h2>
+
+<p>
+Your agricultural carbon ecosystem
+</p>
+
+</div>
+
+</div>
+
+<div class="stats">
+
+<div class="statCard">
+
+<div class="statIcon">
+🌱
+</div>
+
+<div class="statLabel">
+Registered Farms
+</div>
+
+<div
+class="statValue"
+id="farmCount">
+
+0
+
+</div>
+
+</div>
+
+
+<div class="statCard">
+
+<div class="statIcon">
+📊
+</div>
+
+<div class="statLabel">
+Estimated CO₂e
+</div>
+
+<div
+class="statValue"
+id="carbonTotal">
+
+0 kg
+
+</div>
+
+</div>
+
+
+<div class="statCard">
+
+<div class="statIcon">
+🪙
+</div>
+
+<div class="statLabel">
+Verified Credits
+</div>
+
+<div
+class="statValue"
+id="creditTotal">
+
+0 kg
+
+</div>
+
+</div>
+
+
+<div class="statCard">
+
+<div class="statIcon">
+🎨
+</div>
+
+<div class="statLabel">
+Carbon NFTs
+</div>
+
+<div
+class="statValue"
+id="nftCount">
+
+0
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+FEATURES
+===================================================== -->
+
+<section class="section">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+Built for Agri + Web3
+</h2>
+
+<p>
+Everything from farm data to blockchain assets.
+</p>
+
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="feature">
+<div class="featureIcon">🌱</div>
+<h3>Farm Registry</h3>
+<p>
+Create a digital identity for your
+farm, crop and plantation.
+</p>
+</div>
+
+<div class="feature">
+<div class="featureIcon">📍</div>
+<h3>GPS Mapping</h3>
+<p>
+Capture geographic coordinates
+for your agricultural project.
+</p>
+</div>
+
+<div class="feature">
+<div class="featureIcon">📷</div>
+<h3>Evidence</h3>
+<p>
+Collect farm photographs and
+supporting project information.
+</p>
+</div>
+
+<div class="feature">
+<div class="featureIcon">📊</div>
+<h3>Carbon Estimation</h3>
+<p>
+Estimate CO₂e based on the
+selected project methodology.
+</p>
+</div>
+
+<div class="feature">
+<div class="featureIcon">🔍</div>
+<h3>Verification</h3>
+<p>
+Separate verification workflow
+before issuing carbon assets.
+</p>
+</div>
+
+<div class="feature">
+<div class="featureIcon">⛓️</div>
+<h3>MST Blockchain</h3>
+<p>
+Blockchain-ready architecture
+for verified carbon assets.
+</p>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+WORKFLOW
+===================================================== -->
+
+<section class="section">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+Carbon Asset Lifecycle
+</h2>
+
+<p>
+From farm to blockchain.
+</p>
+
+</div>
+
+</div>
+
+<div class="workflow">
+
+<div class="step">
+<div class="stepNumber">1</div>
+<div class="stepIcon">🌱</div>
+<div class="stepText">FARM</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">2</div>
+<div class="stepIcon">📍</div>
+<div class="stepText">GPS</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">3</div>
+<div class="stepIcon">📷</div>
+<div class="stepText">EVIDENCE</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">4</div>
+<div class="stepIcon">📊</div>
+<div class="stepText">CARBON</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">5</div>
+<div class="stepIcon">🔍</div>
+<div class="stepText">VERIFY</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">6</div>
+<div class="stepIcon">🪙</div>
+<div class="stepText">CREDIT</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">7</div>
+<div class="stepIcon">🎨</div>
+<div class="stepText">NFT</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">8</div>
+<div class="stepIcon">⛓️</div>
+<div class="stepText">MST</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+FARM
+===================================================== -->
+
+<section
+class="section"
+id="farm">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+🌱 Register Farm
+</h2>
+
+<p>
+Create your agricultural carbon project.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="formCard">
+
+<div class="formGrid">
+
+<div class="field">
+
+<label>
+Crop
+</label>
+
+<select id="crop">
+
+<option>Bamboo</option>
+<option>Coconut</option>
+<option>Rubber</option>
+<option>Mango</option>
+<option>Banana</option>
+<option>Coffee</option>
+<option>Cocoa</option>
+<option>Rice</option>
+<option>Spices</option>
+<option>Agroforestry</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Farm Area (Hectare)
+</label>
+
+<input
+id="area"
+type="number"
+step="0.0001"
+placeholder="1">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Plant / Tree Count
+</label>
+
+<input
+id="plants"
+type="number"
+placeholder="160">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Planting Date
+</label>
+
+<input
+id="plantingDate"
+type="date">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Latitude
+</label>
+
+<input
+id="lat"
+readonly
+placeholder="GPS required">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Longitude
+</label>
+
+<input
+id="lng"
+readonly
+placeholder="GPS required">
+
+</div>
+
+
+<div class="field fullField">
+
+<button
+class="btn btnSecondary"
+onclick="getGPS()">
+
+📍 Get Current GPS Location
+
+</button>
+
+</div>
+
+
+<div class="field fullField">
+
+<label>
+Farm Photo
+</label>
+
+<input
+id="farmPhoto"
+type="file"
+accept="image/*"
+capture="environment">
+
+</div>
+
+
+<div class="field fullField">
+
+<label>
+Farm Notes
+</label>
+
+<textarea
+id="notes"
+placeholder="Describe the farm, plantation, soil, irrigation, management etc."></textarea>
+
+</div>
+
+
+<div class="field fullField">
+
+<button
+class="btn btnPrimary full"
+onclick="registerFarm()">
+
+🌱 Create Farm Record
+
+</button>
+
+</div>
+
+</div>
+
+
+<div id="farmResult"></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+CARBON
+===================================================== -->
+
+<section
+class="section"
+id="carbon">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+📊 Carbon Calculator
+</h2>
+
+<p>
+Project estimate only — not an official carbon credit.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="calcLayout">
+
+<div class="formCard">
+
+<div class="field">
+
+<label>
+Crop / Project Type
+</label>
+
+<select
+id="carbonCrop"
+onchange="calculateCarbon()">
+
+<option>Bamboo</option>
+<option>Coconut</option>
+<option>Rubber</option>
+<option>Mango</option>
+<option>Banana</option>
+<option>Coffee</option>
+<option>Cocoa</option>
+<option>Rice</option>
+<option>Spices</option>
+<option>Agroforestry</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Area (Hectare)
+</label>
+
+<input
+id="carbonArea"
+type="number"
+value="1"
+step="0.0001"
+oninput="calculateCarbon()">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Plant Count
+</label>
+
+<input
+id="carbonPlants"
+type="number"
+value="160"
+oninput="calculateCarbon()">
+
+</div>
+
+
+<br>
+
+<button
+class="btn btnPrimary full"
+onclick="saveCarbon()">
+
+💾 Save Carbon Estimate
+
+</button>
+
+</div>
+
+
+<div class="calcResult">
+
+<div style="color:var(--muted);">
+Estimated Carbon
+</div>
+
+<div
+class="calcNumber"
+id="carbonResult">
+
+0
+
+</div>
+
+<div class="calcUnit">
+kg CO₂e / year
+</div>
+
+<div
+class="status warning"
+style="max-width:400px;">
+
+⚠️ This is a demonstration estimate.
+Official carbon credits require an approved
+methodology, monitoring, verification and
+applicable registry procedures.
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+VERIFICATION
+===================================================== -->
+
+<section class="section">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+🔍 Verification
+</h2>
+
+<p>
+Verified carbon must come before NFT issuance.
+</p>
+
+</div>
+
+</div>
+
+<div class="formCard">
+
+<div class="formGrid">
+
+<div class="field">
+
+<label>
+Farm ID
+</label>
+
+<input
+id="verifyFarm"
+type="text"
+placeholder="Farm ID">
+
+</div>
+
+<div class="field">
+
+<label>
+Verified CO₂e (kg)
+</label>
+
+<input
+id="verifiedCarbon"
+type="number"
+placeholder="1000">
+
+</div>
+
+<div class="field">
+
+<label>
+Verification ID
+</label>
+
+<input
+id="verificationID"
+placeholder="VER-2026-0001">
+
+</div>
+
+<div class="field">
+
+<label>
+Verifier
+</label>
+
+<input
+id="verifier"
+placeholder="Authorized verifier">
+
+</div>
+
+<div class="field fullField">
+
+<button
+class="btn btnBlue full"
+onclick="createVerification()">
+
+🔍 Record Verification
+
+</button>
+
+</div>
+
+</div>
+
+<div id="verificationResult"></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+NFT
+===================================================== -->
+
+<section
+class="section"
+id="nft">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+🎨 Carbon NFTs
+</h2>
+
+<p>
+ERC-721 representation of verified agricultural carbon assets.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="nftGrid">
+
+<div class="nftCard">
+
+<div class="nftVisual">
+
+<div class="nftEmoji">
+🌱
+</div>
+
+</div>
+
+<div class="nftBody">
+
+<div class="nftTitle">
+AJJRA Carbon NFT
+</div>
+
+<div class="nftMeta">
+
+<span>Standard</span>
+
+<strong>ERC-721</strong>
+
+</div>
+
+<div class="nftMeta">
+
+<span>Network</span>
+
+<strong>MST</strong>
+
+</div>
+
+<div class="nftMeta">
+
+<span>Status</span>
+
+<strong id="nftStatus">
+Not Minted
+</strong>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="formCard">
+
+<div class="field">
+
+<label>
+Farm ID
+</label>
+
+<input
+id="nftFarm"
+placeholder="Farm ID">
+
+</div>
+
+<div class="field">
+
+<label>
+Verified Carbon (kg)
+</label>
+
+<input
+id="nftCarbon"
+type="number"
+placeholder="1000">
+
+</div>
+
+<div class="field">
+
+<label>
+Verification ID
+</label>
+
+<input
+id="nftVerification"
+placeholder="VER-2026-0001">
+
+</div>
+
+<div class="field">
+
+<label>
+IPFS Metadata CID
+</label>
+
+<input
+id="nftCID"
+placeholder="ipfs://bafy...">
+
+</div>
+
+<br>
+
+<button
+class="btn btnPrimary full"
+onclick="mintNFT()">
+
+🎨 Mint Carbon NFT
+
+</button>
+
+<div id="nftResult"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+WALLET
+===================================================== -->
+
+<section class="section">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+👛 Web3 Wallet
+</h2>
+
+<p>
+Connect an EVM-compatible wallet to AJJRA.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="walletSection">
+
+
+<div class="web3Card walletMain">
+
+<div class="walletPanelTop">
+
+<div class="walletIcon">
+👛
+</div>
+
+<div
+class="networkBadge"
+id="networkStatus">
+
+DISCONNECTED
+
+</div>
+
+</div>
+
+<h2 style="margin-top:20px;">
+Wallet Connection
+</h2>
+
+<div
+class="walletAddress"
+id="walletAddress">
+
+Wallet not connected
+
+</div>
+
+<div style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:10px;
+">
+
+<button
+class="btn btnPrimary"
+onclick="connectWallet()">
+
+🔗 Connect
+
+</button>
+
+<button
+class="btn btnSecondary"
+onclick="addMST()">
+
+➕ Add MST
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="web3Card networkInfo">
+
+<h3>
+⛓️ MST Mainnet
+</h3>
+
+<br>
+
+<div class="infoRow">
+<span>Network</span>
+<strong>MST Mainnet</strong>
+</div>
+
+<div class="infoRow">
+<span>Chain ID</span>
+<strong>4646</strong>
+</div>
+
+<div class="infoRow">
+<span>Currency</span>
+<strong>MSTC</strong>
+</div>
+
+<div class="infoRow">
+<span>Decimals</span>
+<strong>18</strong>
+</div>
+
+<div class="infoRow">
+<span>RPC</span>
+<strong>MST RPC</strong>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+RETIRE
+===================================================== -->
+
+<section class="section">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+♻️ Retire Carbon
+</h2>
+
+<p>
+Retirement permanently marks a carbon asset as retired.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="formCard">
+
+<div class="field">
+
+<label>
+NFT Token ID
+</label>
+
+<input
+id="retireToken"
+type="number"
+placeholder="1">
+
+</div>
+
+<br>
+
+<button
+class="btn btnDanger full"
+onclick="retireNFT()">
+
+♻️ Retire Carbon NFT
+
+</button>
+
+<div id="retireResult"></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+MARKETPLACE
+===================================================== -->
+
+<section
+class="section"
+id="market">
+
+<div class="sectionHead">
+
+<div>
+
+<h2>
+💰 AJJRA Marketplace
+</h2>
+
+<p>
+Verified and legally transferable assets only.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="marketCard">
+
+<div class="marketTop">
+
+<div class="marketIcon">
+🌱
+</div>
+
+<div>
+
+<div class="marketTitle">
+Bamboo Project
+</div>
+
+<div class="marketSub">
+Nature-based carbon
+</div>
+
+</div>
+
+</div>
+
+<div class="marketValue">
+Verified Asset
+</div>
+
+<button
+class="btn btnSecondary full"
+onclick="marketInfo()">
+
+View Project
+
+</button>
+
+</div>
+
+
+<div class="marketCard">
+
+<div class="marketTop">
+
+<div class="marketIcon">
+🥥
+</div>
+
+<div>
+
+<div class="marketTitle">
+Coconut Farm
+</div>
+
+<div class="marketSub">
+Agricultural carbon
+</div>
+
+</div>
+
+</div>
+
+<div class="marketValue">
+Verified Asset
+</div>
+
+<button
+class="btn btnSecondary full"
+onclick="marketInfo()">
+
+View Project
+
+</button>
+
+</div>
+
+
+<div class="marketCard">
+
+<div class="marketTop">
+
+<div class="marketIcon">
+🌳
+</div>
+
+<div>
+
+<div class="marketTitle">
+Agroforestry
+</div>
+
+<div class="marketSub">
+Nature restoration
+</div>
+
+</div>
+
+</div>
+
+<div class="marketValue">
+Verified Asset
+</div>
+
+<button
+class="btn btnSecondary full"
+onclick="marketInfo()">
+
+View Project
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+FOOTER
+===================================================== -->
+
+<footer class="footer">
+
+<div class="footerLogo">
+AJJRA
+</div>
+
+<div>
+AGRI • CARBON • BLOCKCHAIN • NFT
+</div>
+
+<br>
+
+<div>
+© 2026 AJJRA
+</div>
+
+</footer>
+
+
+<!-- =====================================================
+TOAST
+===================================================== -->
+
+<div
+class="toast"
+id="toast">
+
+AJJRA
+
+</div>
+
+
+<script>
+
+/* =====================================================
+AJJRA CONFIGURATION
+===================================================== */
+
+const AJJRA = {
+
+name:"AJJRA",
+
+version:"1.0.0",
+
+network:{
+
+chainId:4646,
+
+chainIdHex:"0x1226",
+
+name:"MST Mainnet",
+
+rpc:"https://mariorpc.mstblockchain.com",
+
+backupRpc:"https://craftrpc.mstblockchain.com",
+
+symbol:"MSTC",
+
+decimals:18,
+
+explorer:"https://mstscan.com"
+
+}
+
+};
+
+
+/* =====================================================
+SMART CONTRACT
+===================================================== */
+
+/*
+  IMPORTANT
+
+  Deploy your ERC-721 contract first.
+
+  Then paste the contract address here.
+
+  Example:
+
+  const CONTRACT_ADDRESS =
+  "0x123456789........";
+
+*/
+
+const CONTRACT_ADDRESS = "";
+
+
+/* =====================================================
+ABI
+===================================================== */
+
+const CONTRACT_ABI = [
+
+"function mintCarbonNFT(uint256 farmId,uint256 carbon,string verificationId,string metadataCID) returns(uint256)",
+
+"function retireCarbonNFT(uint256 tokenId)",
+
+"function ownerOf(uint256 tokenId) view returns(address)",
+
+"function tokenURI(uint256 tokenId) view returns(string)"
+
+];
+
+
+/* =====================================================
+CARBON DEMO COEFFICIENTS
+===================================================== */
+
+const COEFFICIENTS = {
+
+Bamboo:1200,
+
+Coconut:600,
+
+Rubber:900,
+
+Mango:700,
+
+Banana:250,
+
+Coffee:400,
+
+Cocoa:500,
+
+Rice:100,
+
+Spices:200,
+
+Agroforestry:800
+
+};
+
+
+/* =====================================================
+WEB3 VARIABLES
+===================================================== */
+
+let provider = null;
+
+let signer = null;
+
+let walletAddress = null;
+
+
+/* =====================================================
+LOCAL DATABASE
+===================================================== */
+
+function getDatabase(){
+
+try{
+
+return JSON.parse(
+localStorage.getItem("AJJRA_DB") || "[]"
+);
+
+}
+
+catch{
+
+return [];
+
+}
+
+}
+
+
+function saveDatabase(data){
+
+localStorage.setItem(
+"AJJRA_DB",
+JSON.stringify(data)
+);
+
+updateDashboard();
+
+}
+
+
+/* =====================================================
+TOAST
+===================================================== */
+
+function toast(message){
+
+const box =
+document.getElementById("toast");
+
+box.innerText = message;
+
+box.classList.add("show");
+
+setTimeout(()=>{
+
+box.classList.remove("show");
+
+},3000);
+
+}
+
+
+/* =====================================================
+SCROLL
+===================================================== */
+
+function scrollToID(id){
+
+const el =
+document.getElementById(id);
+
+if(el){
+
+el.scrollIntoView({
+behavior:"smooth"
+});
+
+}
+
+}
+
+
+/* =====================================================
+GPS
+===================================================== */
+
+function getGPS(){
+
+if(!navigator.geolocation){
+
+toast("GPS is not supported.");
+
+return;
+
+}
+
+navigator.geolocation.getCurrentPosition(
+
+position=>{
+
+document.getElementById("lat")
+.value =
+position.coords.latitude;
+
+document.getElementById("lng")
+.value =
+position.coords.longitude;
+
+toast("📍 GPS location captured.");
+
+},
+
+error=>{
+
+toast(
+"Please allow location permission."
+);
+
+}
+
+);
+
+}
+
+
+/* =====================================================
+CARBON CALCULATOR
+===================================================== */
+
+function calculateCarbon(){
+
+const crop =
+document.getElementById(
+"carbonCrop"
+).value;
+
+const area =
+Number(
+document.getElementById(
+"carbonArea"
+).value || 0
+);
+
+const plants =
+Number(
+document.getElementById(
+"carbonPlants"
+).value || 0
+);
+
+const coefficient =
+COEFFICIENTS[crop] || 0;
+
+const factor =
+Math.min(
+1.25,
+Math.max(
+0.75,
+plants / 160
+)
+);
+
+const result =
+area *
+coefficient *
+factor;
+
+document.getElementById(
+"carbonResult"
+).innerText =
+result.toFixed(2);
+
+return result;
+
+}
+
+
+/* =====================================================
+SAVE CARBON
+===================================================== */
+
+function saveCarbon(){
+
+const carbon =
+calculateCarbon();
+
+const data =
+getDatabase();
+
+data.push({
+
+type:"carbon",
+
+id:
+Date.now(),
+
+crop:
+document.getElementById(
+"carbonCrop"
+).value,
+
+area:
+document.getElementById(
+"carbonArea"
+).value,
+
+plants:
+document.getElementById(
+"carbonPlants"
+).value,
+
+carbon:carbon,
+
+status:"ESTIMATED",
+
+createdAt:
+new Date().toISOString()
+
+});
+
+saveDatabase(data);
+
+toast(
+"💾 Carbon estimate saved."
+);
+
+}
+
+
+/* =====================================================
+REGISTER FARM
+===================================================== */
+
+function registerFarm(){
+
+const crop =
+document.getElementById(
+"crop"
+).value;
+
+const area =
+Number(
+document.getElementById(
+"area"
+).value
+);
+
+const plants =
+Number(
+document.getElementById(
+"plants"
+).value || 0
+);
+
+if(!area || area <= 0){
+
+toast(
+"Please enter farm area."
+);
+
+return;
+
+}
+
+const coefficient =
+COEFFICIENTS[crop];
+
+const factor =
+Math.min(
+1.25,
+Math.max(
+0.75,
+plants / 160
+)
+);
+
+const carbon =
+area *
+coefficient *
+factor;
+
+const farmID =
+"AJJRA-" +
+Date.now().toString().slice(-8);
+
+const farm = {
+
+type:"farm",
+
+farmID:farmID,
+
+crop:crop,
+
+area:area,
+
+plants:plants,
+
+plantingDate:
+document.getElementById(
+"plantingDate"
+).value,
+
+latitude:
+document.getElementById(
+"lat"
+).value,
+
+longitude:
+document.getElementById(
+"lng"
+).value,
+
+notes:
+document.getElementById(
+"notes"
+).value,
+
+estimatedCarbon:carbon,
+
+status:"SUBMITTED",
+
+owner:
+walletAddress || "Not connected",
+
+createdAt:
+new Date().toISOString()
+
+};
+
+const data =
+getDatabase();
+
+data.push(farm);
+
+saveDatabase(data);
+
+
+document.getElementById(
+"farmResult"
+).innerHTML = `
+
+<div class="status success">
+
+<b>🌱 Farm Created</b>
+
+<br><br>
+
+Farm ID:
+<b>${farmID}</b>
+
+<br>
+
+Crop:
+${crop}
+
+<br>
+
+Area:
+${area} hectare
+
+<br>
+
+Plants:
+${plants}
+
+<br>
+
+Estimated:
+${carbon.toFixed(2)} kg CO₂e
+
+<br><br>
+
+Status:
+SUBMITTED
+
+</div>
+
+`;
+
+toast("🌱 Farm registered.");
+
+}
+
+
+/* =====================================================
+VERIFICATION
+===================================================== */
+
+function createVerification(){
+
+const farm =
+document.getElementById(
+"verifyFarm"
+).value.trim();
+
+const carbon =
+Number(
+document.getElementById(
+"verifiedCarbon"
+).value
+);
+
+const verification =
+document.getElementById(
+"verificationID"
+).value.trim();
+
+const verifier =
+document.getElementById(
+"verifier"
+).value.trim();
+
+if(
+!farm ||
+!carbon ||
+!verification
+){
+
+toast(
+"Complete verification details."
+);
+
+return;
+
+}
+
+const data =
+getDatabase();
+
+data.push({
+
+type:"verified",
+
+farmID:farm,
+
+carbon:carbon,
+
+verificationID:verification,
+
+verifier:verifier,
+
+status:"VERIFIED",
+
+createdAt:
+new Date().toISOString()
+
+});
+
+saveDatabase(data);
+
+
+document.getElementById(
+"verificationResult"
+).innerHTML = `
+
+<div class="status success">
+
+🟢 <b>Carbon Verification Recorded</b>
+
+<br><br>
+
+Farm:
+${farm}
+
+<br>
+
+Verified:
+${carbon} kg CO₂e
+
+<br>
+
+Verification:
+${verification}
+
+<br>
+
+Verifier:
+${verifier || "Authorized verifier"}
+
+</div>
+
+`;
+
+toast("🔍 Verification saved.");
+
+}
+
+
+/* =====================================================
+ADD MST NETWORK
+===================================================== */
+
+async function addMST(){
+
+if(!window.ethereum){
+
+toast(
+"No injected EVM wallet detected."
+);
+
+return false;
+
+}
+
+try{
+
+await window.ethereum.request({
+
+method:
+"wallet_addEthereumChain",
+
+params:[{
+
+chainId:
+AJJRA.network.chainIdHex,
+
+chainName:
+AJJRA.network.name,
+
+nativeCurrency:{
+
+name:
+AJJRA.network.symbol,
+
+symbol:
+AJJRA.network.symbol,
+
+decimals:
+AJJRA.network.decimals
+
+},
+
+rpcUrls:[
+AJJRA.network.rpc
+],
+
+blockExplorerUrls:[
+AJJRA.network.explorer
+]
+
+}]
+
+});
+
+toast(
+"⛓️ MST Mainnet added."
+);
+
+return true;
+
+}
+
+catch(error){
+
+console.error(error);
+
+toast(
+error.message || "Could not add network."
+);
+
+return false;
+
+}
+
+}
+
+
+/* =====================================================
+CONNECT WALLET
+===================================================== */
+
+async function connectWallet(){
+
+try{
+
+if(!window.ethereum){
+
+toast(
+"Open AJJRA inside an EVM wallet browser or use an injected wallet."
+);
+
+return;
+
+}
+
+
+/* Create provider */
+
+provider =
+new ethers.BrowserProvider(
+window.ethereum
+);
+
+
+/* Request accounts */
+
+await provider.send(
+"eth_requestAccounts",
+[]
+);
+
+
+/* Current network */
+
+let network =
+await provider.getNetwork();
+
+
+/* Switch if needed */
+
+if(
+Number(network.chainId)
+!==
+AJJRA.network.chainId
+){
+
+try{
+
+await window.ethereum.request({
+
+method:
+"wallet_switchEthereumChain",
+
+params:[{
+
+chainId:
+AJJRA.network.chainIdHex
+
+}]
+
+});
+
+}
+
+catch(error){
+
+if(
+error.code === 4902
+){
+
+const added =
+await addMST();
+
+if(!added){
+return;
+}
+
+await window.ethereum.request({
+
+method:
+"wallet_switchEthereumChain",
+
+params:[{
+
+chainId:
+AJJRA.network.chainIdHex
+
+}]
+
+});
+
+}
+
+else{
+
+throw error;
+
+}
+
+}
+
+}
+
+
+/* Refresh provider */
+
+provider =
+new ethers.BrowserProvider(
+window.ethereum
+);
+
+signer =
+await provider.getSigner();
+
+walletAddress =
+await signer.getAddress();
+
+
+/* UI */
+
+document.getElementById(
+"walletAddress"
+).innerText =
+walletAddress;
+
+document.getElementById(
+"heroWallet"
+).innerText =
+walletAddress;
+
+document.getElementById(
+"networkStatus"
+).innerText =
+"MST MAINNET";
+
+
+toast(
+"🟢 Wallet connected."
+);
+
+
+/* Save wallet */
+
+localStorage.setItem(
+"AJJRA_WALLET",
+walletAddress
+);
+
+
+/* Listen */
+
+if(window.ethereum.on){
+
+window.ethereum.on(
+"accountsChanged",
+handleAccountsChanged
+);
+
+window.ethereum.on(
+"chainChanged",
+()=>{
+window.location.reload();
+}
+);
+
+}
+
+}
+
+catch(error){
+
+console.error(error);
+
+toast(
+error.shortMessage ||
+error.message ||
+"Wallet connection failed."
+);
+
+}
+
+}
+
+
+/* =====================================================
+ACCOUNT CHANGED
+===================================================== */
+
+function handleAccountsChanged(accounts){
+
+if(!accounts.length){
+
+walletAddress = null;
+
+document.getElementById(
+"walletAddress"
+).innerText =
+"Wallet not connected";
+
+document.getElementById(
+"heroWallet"
+).innerText =
+"Not connected";
+
+document.getElementById(
+"networkStatus"
+).innerText =
+"DISCONNECTED";
+
+return;
+
+}
+
+walletAddress =
+accounts[0];
+
+document.getElementById(
+"walletAddress"
+).innerText =
+walletAddress;
+
+document.getElementById(
+"heroWallet"
+).innerText =
+walletAddress;
+
+}
+
+
+/* =====================================================
+NFT MINT
+===================================================== */
+
+async function mintNFT(){
+
+try{
+
+if(!walletAddress){
+
+await connectWallet();
+
+}
+
+if(!signer){
+
+throw new Error(
+"Connect wallet first."
+);
+
+}
+
+if(!CONTRACT_ADDRESS){
+
+throw new Error(
+"Carbon NFT contract address has not been configured."
+);
+
+}
+
+const farmID =
+document.getElementById(
+"nftFarm"
+).value.trim();
+
+const carbon =
+Number(
+document.getElementById(
+"nftCarbon"
+).value
+);
+
+const verification =
+document.getElementById(
+"nftVerification"
+).value.trim();
+
+const cid =
+document.getElementById(
+"nftCID"
+).value.trim();
+
+if(
+!farmID ||
+!carbon ||
+!verification ||
+!cid
+){
+
+throw new Error(
+"Complete NFT information."
+);
+
+}
+
+
+/* Contract */
+
+const contract =
+new ethers.Contract(
+CONTRACT_ADDRESS,
+CONTRACT_ABI,
+signer
+);
+
+
+/* Transaction */
+
+const tx =
+await contract.mintCarbonNFT(
+
+farmID,
+
+Math.round(carbon),
+
+verification,
+
+cid
+
+);
+
+
+document.getElementById(
+"nftResult"
+).innerHTML = `
+
+<div class="status warning">
+
+⏳ Transaction submitted...
+
+<br><br>
+
+${tx.hash}
+
+</div>
+
+`;
+
+
+await tx.wait();
+
+
+/* Save */
+
+const data =
+getDatabase();
+
+data.push({
+
+type:"nft",
+
+farmID:farmID,
+
+carbon:carbon,
+
+verificationID:verification,
+
+metadataCID:cid,
+
+txHash:tx.hash,
+
+status:"MINTED",
+
+createdAt:
+new Date().toISOString()
+
+});
+
+saveDatabase(data);
+
+
+document.getElementById(
+"nftStatus"
+).innerText =
+"MINTED";
+
+
+document.getElementById(
+"nftResult"
+).innerHTML = `
+
+<div class="status success">
+
+🎨 <b>Carbon NFT Minted</b>
+
+<br><br>
+
+Transaction:
+
+<br>
+
+${tx.hash}
+
+</div>
+
+`;
+
+toast(
+"🎨 Carbon NFT minted."
+);
+
+}
+
+catch(error){
+
+console.error(error);
+
+document.getElementById(
+"nftResult"
+).innerHTML = `
+
+<div class="status error">
+
+❌ ${
+error.shortMessage ||
+error.message ||
+"Mint failed."
+}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =====================================================
+RETIRE NFT
+===================================================== */
+
+async function retireNFT(){
+
+try{
+
+if(!signer){
+
+await connectWallet();
+
+}
+
+if(!signer){
+
+throw new Error(
+"Connect wallet first."
+);
+
+}
+
+if(!CONTRACT_ADDRESS){
+
+throw new Error(
+"NFT contract address not configured."
+);
+
+}
+
+const tokenID =
+document.getElementById(
+"retireToken"
+).value;
+
+if(!tokenID){
+
+throw new Error(
+"Enter token ID."
+);
+
+}
+
+const contract =
+new ethers.Contract(
+CONTRACT_ADDRESS,
+CONTRACT_ABI,
+signer
+);
+
+const tx =
+await contract.retireCarbonNFT(
+tokenID
+);
+
+document.getElementById(
+"retireResult"
+).innerHTML = `
+
+<div class="status warning">
+
+⏳ Retirement transaction submitted.
+
+</div>
+
+`;
+
+await tx.wait();
+
+document.getElementById(
+"retireResult"
+).innerHTML = `
+
+<div class="status success">
+
+♻️ <b>Carbon NFT Retired</b>
+
+<br><br>
+
+TX:
+${tx.hash}
+
+</div>
+
+`;
+
+toast(
+"♻️ Carbon asset retired."
+);
+
+}
+
+catch(error){
+
+document.getElementById(
+"retireResult"
+).innerHTML = `
+
+<div class="status error">
+
+❌ ${
+error.shortMessage ||
+error.message ||
+"Retirement failed."
+}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =====================================================
+MARKET
+===================================================== */
+
+function marketInfo(){
+
+toast(
+"Marketplace trading should only use legally issued and transferable verified credits."
+);
+
+}
+
+
+/* =====================================================
+DASHBOARD
+===================================================== */
+
+function updateDashboard(){
+
+const data =
+getDatabase();
+
+const farms =
+data.filter(
+x=>x.type==="farm"
+);
+
+const carbon =
+data.filter(
+x=>x.type==="carbon"
+);
+
+const verified =
+data.filter(
+x=>x.type==="verified"
+);
+
+const nfts =
+data.filter(
+x=>x.type==="nft"
+);
+
+
+const totalCarbon =
+carbon.reduce(
+(sum,x)=>
+sum +
+Number(x.carbon || 0),
+0
+);
+
+const totalVerified =
+verified.reduce(
+(sum,x)=>
+sum +
+Number(x.carbon || 0),
+0
+);
+
+
+document.getElementById(
+"farmCount"
+).innerText =
+farms.length;
+
+document.getElementById(
+"carbonTotal"
+).innerText =
+totalCarbon.toFixed(2)
++
+" kg";
+
+document.getElementById(
+"creditTotal"
+).innerText =
+totalVerified.toFixed(2)
++
+" kg";
+
+document.getElementById(
+"nftCount"
+).innerText =
+nfts.length;
+
+}
+
+
+/* =====================================================
+LOAD SAVED WALLET
+===================================================== */
+
+function loadWallet(){
+
+const saved =
+localStorage.getItem(
+"AJJRA_WALLET"
+);
+
+if(saved){
+
+document.getElementById(
+"walletAddress"
+).innerText =
+saved;
+
+document.getElementById(
+"heroWallet"
+).innerText =
+saved;
+
+}
+
+}
+
+
+/* =====================================================
+INITIALIZE
+===================================================== */
+
+calculateCarbon();
+
+updateDashboard();
+
+loadWallet();
+
+</script>
+
+</body>
+</html>
