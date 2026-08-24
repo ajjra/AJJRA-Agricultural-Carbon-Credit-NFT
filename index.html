@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>AJJRA | Web3 Agricultural Carbon</title>
+
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+
+<style>
+
+/* =====================================================
+   AJJRA WEB3 UI
+===================================================== */
+
+:root{
+    --bg:#06110c;
+    --bg2:#0a1911;
+    --card:#0d2116;
+    --card2:#102a1b;
+    --green:#20d878;
+    --green2:#0ca653;
+    --text:#f3fff7;
+    --muted:#8ea89a;
+    --border:#1d3b29;
+    --danger:#ff5d67;
+    --gold:#f4c95d;
+    --blue:#54a8ff;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:
+    Inter,
+    Arial,
+    Helvetica,
+    sans-serif;
+
+    background:
+    radial-gradient(
+        circle at 10% 0%,
+        #123b24 0,
+        transparent 30%
+    ),
+    radial-gradient(
+        circle at 90% 20%,
+        #07351e 0,
+        transparent 30%
+    ),
+    var(--bg);
+
+    color:var(--text);
+
+    min-height:100vh;
+}
+
+/* =====================================================
+   BACKGROUND
+===================================================== */
+
+body::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    background-image:
+    linear-gradient(
+        rgba(255,255,255,.02) 1px,
+        transparent 1px
+    ),
+    linear-gradient(
+        90deg,
+        rgba(255,255,255,.02) 1px,
+        transparent 1px
+    );
+
+    background-size:40px 40px;
+
+    mask-image:
+    linear-gradient(
+        to bottom,
+        black,
+        transparent 85%
+    );
+
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.header{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    padding:
+    14px 5%;
+
+    display:flex;
+
+    justify-content:
+    space-between;
+
+    align-items:center;
+
+    gap:20px;
+
+    background:
+    rgba(6,17,12,.78);
+
+    backdrop-filter:
+    blur(20px);
+
+    border-bottom:
+    1px solid var(--border);
+}
+
+.brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+}
+
+.logoIcon{
+
+    width:42px;
+    height:42px;
+
+    border-radius:14px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:22px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--green),
+        #087c3c
+    );
+
+    box-shadow:
+    0 0 25px
+    rgba(32,216,120,.25);
+}
+
+.logo{
+
+    font-size:23px;
+
+    font-weight:900;
+
+    letter-spacing:3px;
+}
+
+.brandSmall{
+
+    font-size:9px;
+
+    color:var(--muted);
+
+    letter-spacing:1.2px;
+}
+
+.nav{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    overflow-x:auto;
+}
+
+.nav a{
+
+    color:#bdd0c3;
+
+    text-decoration:none;
+
+    padding:
+    9px 11px;
+
+    border-radius:10px;
+
+    font-size:13px;
+
+    white-space:nowrap;
+}
+
+.nav a:hover{
+
+    background:
+    #ffffff08;
+
+    color:white;
+}
+
+.wallet{
+
+    border:1px solid
+    rgba(32,216,120,.35);
+
+    background:
+    rgba(32,216,120,.1);
+
+    color:
+    var(--green);
+
+    padding:
+    10px 15px;
+
+    border-radius:12px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    white-space:nowrap;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+
+    max-width:1250px;
+
+    margin:auto;
+
+    min-height:620px;
+
+    padding:
+    80px 5%;
+
+    display:grid;
+
+    grid-template-columns:
+    1.2fr .8fr;
+
+    align-items:center;
+
+    gap:50px;
+}
+
+.badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    padding:
+    8px 13px;
+
+    border-radius:30px;
+
+    background:
+    rgba(32,216,120,.08);
+
+    border:
+    1px solid
+    rgba(32,216,120,.25);
+
+    color:
+    var(--green);
+
+    font-size:12px;
+
+    font-weight:bold;
+}
+
+.hero h1{
+
+    font-size:
+    clamp(
+        42px,
+        6vw,
+        78px
+    );
+
+    line-height:1;
+
+    margin:
+    20px 0;
+}
+
+.gradientText{
+
+    background:
+    linear-gradient(
+        90deg,
+        #fff,
+        #20d878
+    );
+
+    -webkit-background-clip:text;
+
+    -webkit-text-fill-color:
+    transparent;
+}
+
+.heroText{
+
+    color:
+    var(--muted);
+
+    font-size:17px;
+
+    line-height:1.7;
+
+    max-width:650px;
+}
+
+.heroButtons{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:30px;
+
+    flex-wrap:wrap;
+}
+
+.btn{
+
+    border:0;
+
+    padding:
+    14px 20px;
+
+    border-radius:13px;
+
+    font-weight:800;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+    text-decoration:none;
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    gap:8px;
+}
+
+.btn:hover{
+
+    transform:
+    translateY(-2px);
+}
+
+.primary{
+
+    background:
+    linear-gradient(
+        135deg,
+        #20d878,
+        #0ca653
+    );
+
+    color:#04150b;
+
+    box-shadow:
+    0 10px 30px
+    rgba(32,216,120,.15);
+}
+
+.secondary{
+
+    background:
+    #ffffff06;
+
+    color:white;
+
+    border:
+    1px solid var(--border);
+}
+
+/* =====================================================
+   HERO CARD
+===================================================== */
+
+.heroCard{
+
+    position:relative;
+
+    padding:25px;
+
+    border-radius:28px;
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(19,52,31,.95),
+        rgba(8,22,14,.95)
+    );
+
+    border:
+    1px solid
+    rgba(32,216,120,.2);
+
+    box-shadow:
+    0 30px 80px
+    rgba(0,0,0,.35);
+}
+
+.heroCard::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+    height:150px;
+
+    border-radius:50%;
+
+    background:
+    rgba(32,216,120,.13);
+
+    filter:blur(30px);
+
+    right:0;
+    top:0;
+}
+
+.carbonCircle{
+
+    width:210px;
+    height:210px;
+
+    margin:
+    15px auto 25px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border:
+    2px solid
+    rgba(32,216,120,.45);
+
+    box-shadow:
+    0 0 50px
+    rgba(32,216,120,.12);
+}
+
+.carbonCircle strong{
+
+    font-size:36px;
+
+    color:
+    var(--green);
+}
+
+.carbonCircle span{
+
+    color:
+    var(--muted);
+
+    font-size:12px;
+}
+
+/* =====================================================
+   SECTIONS
+===================================================== */
+
+section{
+
+    max-width:1250px;
+
+    margin:auto;
+
+    padding:
+    80px 5%;
+}
+
+.title{
+
+    text-align:center;
+
+    margin-bottom:45px;
+}
+
+.title .eyebrow{
+
+    color:
+    var(--green);
+
+    font-size:12px;
+
+    font-weight:bold;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+}
+
+.title h2{
+
+    font-size:
+    clamp(30px,5vw,45px);
+
+    margin:
+    10px 0;
+}
+
+.title p{
+
+    color:
+    var(--muted);
+
+    max-width:600px;
+
+    margin:auto;
+
+    line-height:1.6;
+}
+
+/* =====================================================
+   STATS
+===================================================== */
+
+.stats{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(
+        4,
+        1fr
+    );
+
+    gap:14px;
+}
+
+.stat{
+
+    background:
+    rgba(13,33,22,.8);
+
+    border:
+    1px solid var(--border);
+
+    border-radius:18px;
+
+    padding:22px;
+}
+
+.statIcon{
+
+    font-size:22px;
+
+    margin-bottom:15px;
+}
+
+.statNumber{
+
+    font-size:28px;
+
+    font-weight:900;
+
+    color:white;
+}
+
+.statLabel{
+
+    color:
+    var(--muted);
+
+    font-size:12px;
+
+    margin-top:5px;
+}
+
+/* =====================================================
+   CARDS
+===================================================== */
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(
+        auto-fit,
+        minmax(220px,1fr)
+    );
+
+    gap:18px;
+}
+
+.card{
+
+    background:
+    linear-gradient(
+        145deg,
+        rgba(16,42,27,.8),
+        rgba(8,24,15,.8)
+    );
+
+    border:
+    1px solid var(--border);
+
+    border-radius:20px;
+
+    padding:24px;
+
+    transition:.25s;
+}
+
+.card:hover{
+
+    border-color:
+    rgba(32,216,120,.35);
+
+    transform:
+    translateY(-3px);
+}
+
+.cardIcon{
+
+    font-size:35px;
+
+    margin-bottom:15px;
+}
+
+.card h3{
+
+    margin-bottom:8px;
+}
+
+.card p{
+
+    color:
+    var(--muted);
+
+    line-height:1.6;
+
+    font-size:14px;
+}
+
+/* =====================================================
+   WORKFLOW
+===================================================== */
+
+.workflow{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(
+        8,
+        1fr
+    );
+
+    gap:8px;
+}
+
+.step{
+
+    text-align:center;
+
+    padding:20px 8px;
+
+    border:
+    1px solid var(--border);
+
+    background:
+    #ffffff03;
+
+    border-radius:15px;
+}
+
+.stepNumber{
+
+    width:35px;
+    height:35px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    margin:
+    0 auto 10px;
+
+    border-radius:50%;
+
+    background:
+    rgba(32,216,120,.12);
+
+    color:
+    var(--green);
+
+    font-weight:bold;
+}
+
+.stepText{
+
+    font-size:11px;
+
+    color:
+    var(--muted);
+}
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.panel{
+
+    max-width:800px;
+
+    margin:auto;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    background:
+    rgba(13,33,22,.9);
+
+    border:
+    1px solid var(--border);
+}
+
+.formGrid{
+
+    display:grid;
+
+    grid-template-columns:
+    1fr 1fr;
+
+    gap:15px;
+}
+
+.field{
+
+    margin-bottom:15px;
+}
+
+.field.full{
+
+    grid-column:
+    1 / -1;
+}
+
+.field label{
+
+    display:block;
+
+    margin-bottom:7px;
+
+    color:
+    #c7d7cc;
+
+    font-size:13px;
+
+    font-weight:bold;
+}
+
+input,
+select,
+textarea{
+
+    width:100%;
+
+    padding:14px;
+
+    background:
+    #06110c;
+
+    color:white;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:12px;
+
+    outline:none;
+
+    font-size:14px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    border-color:
+    var(--green);
+
+    box-shadow:
+    0 0 0 3px
+    rgba(32,216,120,.06);
+}
+
+textarea{
+
+    min-height:110px;
+
+    resize:vertical;
+}
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+.result{
+
+    margin-top:18px;
+
+    padding:20px;
+
+    border-radius:16px;
+
+    background:
+    rgba(32,216,120,.07);
+
+    border:
+    1px solid
+    rgba(32,216,120,.18);
+}
+
+.resultNumber{
+
+    font-size:40px;
+
+    font-weight:900;
+
+    color:
+    var(--green);
+
+    margin:8px 0;
+}
+
+.warning{
+
+    margin-top:15px;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    background:
+    rgba(244,201,93,.08);
+
+    border:
+    1px solid
+    rgba(244,201,93,.2);
+
+    color:
+    #e6d18d;
+
+    font-size:12px;
+
+    line-height:1.6;
+}
+
+/* =====================================================
+   WALLET
+===================================================== */
+
+.walletPanel{
+
+    max-width:850px;
+
+    margin:auto;
+
+    padding:30px;
+
+    border-radius:25px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #0c301b,
+        #07150d
+    );
+
+    border:
+    1px solid
+    rgba(32,216,120,.2);
+
+    text-align:center;
+}
+
+.network{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    gap:7px;
+
+    margin-top:12px;
+
+    padding:7px 11px;
+
+    border-radius:20px;
+
+    background:
+    #20d87812;
+
+    color:
+    var(--green);
+
+    font-size:12px;
+}
+
+.dot{
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:
+    var(--green);
+
+    box-shadow:
+    0 0 10px
+    var(--green);
+}
+
+.address{
+
+    margin:
+    20px auto;
+
+    padding:15px;
+
+    max-width:650px;
+
+    border-radius:12px;
+
+    background:
+    #00000030;
+
+    color:
+    #c8dbcf;
+
+    word-break:
+    break-all;
+
+    font-family:
+    monospace;
+
+    font-size:12px;
+}
+
+/* =====================================================
+   NFT
+===================================================== */
+
+.nftCard{
+
+    overflow:hidden;
+
+    background:
+    #0d2116;
+
+    border:
+    1px solid var(--border);
+
+    border-radius:22px;
+}
+
+.nftImage{
+
+    height:240px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:80px;
+
+    background:
+    radial-gradient(
+        circle,
+        #1bbf68,
+        #063b20 65%
+    );
+}
+
+.nftBody{
+
+    padding:22px;
+}
+
+.tag{
+
+    display:inline-block;
+
+    margin-top:10px;
+
+    padding:6px 9px;
+
+    border-radius:20px;
+
+    background:
+    #20d87812;
+
+    color:
+    var(--green);
+
+    font-size:11px;
+}
+
+/* =====================================================
+   MARKET
+===================================================== */
+
+.price{
+
+    font-size:24px;
+
+    color:
+    var(--green);
+
+    font-weight:900;
+
+    margin:
+    15px 0;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer{
+
+    border-top:
+    1px solid var(--border);
+
+    background:
+    #030a06;
+
+    padding:
+    55px 5%;
+}
+
+.footerGrid{
+
+    max-width:1250px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+    2fr 1fr 1fr 1fr;
+
+    gap:30px;
+}
+
+footer h3{
+
+    margin-bottom:12px;
+}
+
+footer p{
+
+    color:
+    var(--muted);
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+.copyright{
+
+    max-width:1250px;
+
+    margin:
+    35px auto 0;
+
+    padding-top:20px;
+
+    border-top:
+    1px solid var(--border);
+
+    color:
+    #63776a;
+
+    font-size:12px;
+
+    text-align:center;
+}
+
+/* =====================================================
+   TOAST
+===================================================== */
+
+#toast{
+
+    position:fixed;
+
+    left:50%;
+
+    bottom:25px;
+
+    transform:
+    translate(-50%,120px);
+
+    background:
+    #102a1b;
+
+    border:
+    1px solid
+    rgba(32,216,120,.3);
+
+    color:white;
+
+    padding:
+    14px 18px;
+
+    border-radius:13px;
+
+    z-index:2000;
+
+    transition:.3s;
+
+    box-shadow:
+    0 15px 40px #0008;
+
+    font-size:13px;
+}
+
+#toast.show{
+
+    transform:
+    translate(-50%,0);
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:900px){
+
+    .hero{
+
+        grid-template-columns:1fr;
+
+        text-align:center;
+    }
+
+    .heroText{
+
+        margin:auto;
+    }
+
+    .heroButtons{
+
+        justify-content:center;
+    }
+
+    .workflow{
+
+        grid-template-columns:
+        repeat(4,1fr);
+    }
+
+    .stats{
+
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .footerGrid{
+
+        grid-template-columns:
+        1fr 1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .header{
+
+        padding:
+        12px 15px;
+    }
+
+    .nav a{
+
+        display:none;
+    }
+
+    .hero{
+
+        padding:
+        65px 18px;
+    }
+
+    section{
+
+        padding:
+        60px 18px;
+    }
+
+    .formGrid{
+
+        grid-template-columns:1fr;
+    }
+
+    .field.full{
+
+        grid-column:auto;
+    }
+
+    .workflow{
+
+        grid-template-columns:
+        repeat(2,1fr);
+    }
+
+    .stats{
+
+        grid-template-columns:1fr 1fr;
+    }
+
+    .footerGrid{
+
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+HEADER
+===================================================== -->
+
+<header class="header">
+
+<div class="brand">
+
+<div class="logoIcon">
+🌱
+</div>
+
+<div>
+
+<div class="logo">
+AJJRA
+</div>
+
+<div class="brandSmall">
+AGRI • CARBON • WEB3
+</div>
+
+</div>
+
+</div>
+
+
+<nav class="nav">
+
+<a href="#home">Home</a>
+
+<a href="#farms">Farm</a>
+
+<a href="#carbon">Carbon</a>
+
+<a href="#nft">NFT</a>
+
+<a href="#market">Market</a>
+
+<button
+class="wallet"
+onclick="connectWallet()">
+
+👛 Connect
+
+</button>
+
+</nav>
+
+</header>
+
+
+<!-- =====================================================
+HERO
+===================================================== -->
+
+<main id="home">
+
+<div class="hero">
+
+<div>
+
+<div class="badge">
+
+<span class="dot"></span>
+
+MST MAINNET • WEB3
+
+</div>
+
+
+<h1>
+
+Agriculture
+
+<span class="gradientText">
+meets Carbon
+</span>
+
+</h1>
+
+
+<p class="heroText">
+
+AJJRA is a Web3 platform designed to
+connect agricultural projects, carbon
+measurement, verification and blockchain
+assets in one simple ecosystem.
+
+</p>
+
+
+<div class="heroButtons">
+
+<a
+href="#farms"
+class="btn primary">
+
+🌱 Start Farm
+
+</a>
+
+
+<a
+href="#carbon"
+class="btn secondary">
+
+📊 Calculate Carbon
+
+</a>
+
+</div>
+
+</div>
+
+
+<div class="heroCard">
+
+<div class="carbonCircle">
+
+<strong id="heroCarbon">
+0
+</strong>
+
+<span>
+kg CO₂e estimate
+</span>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="cardIcon">
+🌱
+</div>
+
+<h3>
+Farm
+</h3>
+
+<p>
+Digital farm records
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardIcon">
+⛓️
+</div>
+
+<h3>
+MST
+</h3>
+
+<p>
+Blockchain asset layer
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+STATS
+===================================================== -->
+
+<section>
+
+<div class="stats">
+
+<div class="stat">
+
+<div class="statIcon">
+🌱
+</div>
+
+<div
+class="statNumber"
+id="farmCount">
+
+0
+</div>
+
+<div class="statLabel">
+Registered Farms
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="statIcon">
+🌍
+</div>
+
+<div
+class="statNumber"
+id="carbonTotal">
+
+0
+</div>
+
+<div class="statLabel">
+Estimated kg CO₂e
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="statIcon">
+🪙
+</div>
+
+<div
+class="statNumber"
+id="verifiedCount">
+
+0
+</div>
+
+<div class="statLabel">
+Verified Credits
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="statIcon">
+🎨
+</div>
+
+<div
+class="statNumber"
+id="nftCount">
+
+0
+</div>
+
+<div class="statLabel">
+Carbon NFTs
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+ECOSYSTEM
+===================================================== -->
+
+<section>
+
+<div class="title">
+
+<div class="eyebrow">
+AJJRA ECOSYSTEM
+</div>
+
+<h2>
+Everything in one place
+</h2>
+
+<p>
+From farm registration to blockchain
+carbon assets.
+</p>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="cardIcon">
+🌱
+</div>
+
+<h3>
+Farm Registration
+</h3>
+
+<p>
+Create a digital record of your
+agricultural project.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardIcon">
+📍
+</div>
+
+<h3>
+GPS Mapping
+</h3>
+
+<p>
+Capture farm coordinates directly
+from your mobile device.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardIcon">
+📷
+</div>
+
+<h3>
+Evidence
+</h3>
+
+<p>
+Farm photos and documents can
+later be stored using IPFS.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardIcon">
+📊
+</div>
+
+<h3>
+Carbon
+</h3>
+
+<p>
+Estimate agricultural CO₂e using
+project-specific methodology.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardIcon">
+🔍
+</div>
+
+<h3>
+Verification
+</h3>
+
+<p>
+Independent verification is required
+before official credit issuance.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="cardIcon">
+🎨
+</div>
+
+<h3>
+Carbon NFT
+</h3>
+
+<p>
+Represent verified assets as
+ERC-721 tokens.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+WORKFLOW
+===================================================== -->
+
+<section>
+
+<div class="title">
+
+<div class="eyebrow">
+WEB3 WORKFLOW
+</div>
+
+<h2>
+Farm → Carbon → NFT
+</h2>
+
+</div>
+
+
+<div class="workflow">
+
+<div class="step">
+<div class="stepNumber">1</div>
+<div class="stepText">🌱 FARM</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">2</div>
+<div class="stepText">📍 GPS</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">3</div>
+<div class="stepText">📷 EVIDENCE</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">4</div>
+<div class="stepText">📊 CARBON</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">5</div>
+<div class="stepText">🔍 VERIFY</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">6</div>
+<div class="stepText">🪙 CREDIT</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">7</div>
+<div class="stepText">🎨 NFT</div>
+</div>
+
+<div class="step">
+<div class="stepNumber">8</div>
+<div class="stepText">⛓️ MST</div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+FARM
+===================================================== -->
+
+<section id="farms">
+
+<div class="title">
+
+<div class="eyebrow">
+FARM ONBOARDING
+</div>
+
+<h2>
+🌱 Register Farm
+</h2>
+
+<p>
+Create your agricultural project.
+</p>
+
+</div>
+
+
+<div class="panel">
+
+<div class="formGrid">
+
+<div class="field">
+
+<label>
+Crop
+</label>
+
+<select id="crop">
+
+<option>Bamboo</option>
+<option>Coconut</option>
+<option>Rubber</option>
+<option>Mango</option>
+<option>Banana</option>
+<option>Coffee</option>
+<option>Cocoa</option>
+<option>Rice</option>
+<option>Spices</option>
+<option>Agroforestry</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Area (Hectare)
+</label>
+
+<input
+id="area"
+type="number"
+step="0.0001"
+placeholder="1">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Plant / Tree Count
+</label>
+
+<input
+id="plants"
+type="number"
+placeholder="160">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Planting Date
+</label>
+
+<input
+id="date"
+type="date">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Latitude
+</label>
+
+<input
+id="lat"
+readonly>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Longitude
+</label>
+
+<input
+id="lng"
+readonly>
+
+</div>
+
+
+<div class="field full">
+
+<button
+class="btn secondary"
+onclick="getGPS()">
+
+📍 Use My Current Location
+
+</button>
+
+</div>
+
+
+<div class="field full">
+
+<label>
+Farm Notes
+</label>
+
+<textarea
+id="notes"
+placeholder="Describe your farm, crop, planting method, etc."></textarea>
+
+</div>
+
+</div>
+
+
+<button
+class="btn primary"
+onclick="registerFarm()">
+
+🌱 Register Farm
+
+</button>
+
+
+<div id="farmResult"></div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+CARBON CALCULATOR
+===================================================== -->
+
+<section id="carbon">
+
+<div class="title">
+
+<div class="eyebrow">
+CARBON ENGINE
+</div>
+
+<h2>
+📊 Carbon Calculator
+</h2>
+
+<p>
+Calculate an indicative agricultural
+carbon estimate.
+</p>
+
+</div>
+
+
+<div class="panel">
+
+<div class="formGrid">
+
+<div class="field">
+
+<label>
+Crop
+</label>
+
+<select
+id="carbonCrop"
+onchange="calculateCarbon()">
+
+<option>Bamboo</option>
+<option>Coconut</option>
+<option>Rubber</option>
+<option>Mango</option>
+<option>Banana</option>
+<option>Coffee</option>
+<option>Cocoa</option>
+<option>Rice</option>
+<option>Spices</option>
+<option>Agroforestry</option>
+
+</select>
+
+</div>
+
+
+<div class="field">
+
+<label>
+Area (Hectare)
+</label>
+
+<input
+id="carbonArea"
+type="number"
+value="1"
+oninput="calculateCarbon()">
+
+</div>
+
+
+<div class="field">
+
+<label>
+Plant Count
+</label>
+
+<input
+id="carbonPlants"
+type="number"
+value="160"
+oninput="calculateCarbon()">
+
+</div>
+
+</div>
+
+
+<div class="result">
+
+<div>
+Estimated Carbon
+</div>
+
+<div
+id="carbonResult"
+class="resultNumber">
+
+0 kg
+
+</div>
+
+<div
+style="
+color:var(--muted);
+font-size:12px;
+">
+
+CO₂e / year — indicative estimate
+
+</div>
+
+</div>
+
+
+<div class="warning">
+
+⚠️ This is an illustrative calculator.
+An official carbon credit requires a
+recognized methodology, monitoring,
+validation/verification and applicable
+registry/legal requirements.
+
+</div>
+
+
+<br>
+
+
+<button
+class="btn primary"
+onclick="saveCarbon()">
+
+💾 Save Estimate
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+WALLET
+===================================================== -->
+
+<section>
+
+<div class="title">
+
+<div class="eyebrow">
+WEB3 WALLET
+</div>
+
+<h2>
+👛 Connect Wallet
+</h2>
+
+<p>
+Connect an EVM-compatible wallet to
+interact with MST Mainnet.
+</p>
+
+</div>
+
+
+<div class="walletPanel">
+
+<h2>
+⛓️ MST Mainnet
+</h2>
+
+<div class="network">
+
+<span class="dot"></span>
+
+MSTC • Chain ID 4646
+
+</div>
+
+
+<div
+id="walletAddress"
+class="address">
+
+Wallet not connected
+
+</div>
+
+
+<button
+class="btn primary"
+onclick="connectWallet()">
+
+🔗 Connect Wallet
+
+</button>
+
+
+<button
+class="btn secondary"
+onclick="addMST()"
+style="margin-left:8px">
+
+➕ Add MST Network
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+NFT
+===================================================== -->
+
+<section id="nft">
+
+<div class="title">
+
+<div class="eyebrow">
+ON-CHAIN ASSET
+</div>
+
+<h2>
+🎨 Carbon NFT
+</h2>
+
+<p>
+Verified agricultural carbon assets
+can be represented as ERC-721 NFTs.
+</p>
+
+</div>
+
+
+<div class="grid">
+
+<div class="nftCard">
+
+<div class="nftImage">
+🌱
+</div>
+
+<div class="nftBody">
+
+<h3>
+AJJRA Green Farm #001
+</h3>
+
+<p
+style="
+color:var(--muted);
+margin-top:8px;
+">
+
+Agricultural Carbon Asset
+
+</p>
+
+<span class="tag">
+ERC-721
+</span>
+
+<span class="tag">
+MST MAINNET
+</span>
+
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3>
+NFT Metadata
+</h3>
+
+<br>
+
+<p>
+Farm ID:
+<span id="nftFarm">
+—
+</span>
+</p>
+
+<br>
+
+<p>
+Carbon:
+<span id="nftCarbon">
+—
+</span>
+</p>
+
+<br>
+
+<p>
+Verification:
+<span id="nftVerification">
+Pending
+</span>
+</p>
+
+<br>
+
+<p>
+Token ID:
+<span id="tokenId">
+—
+</span>
+</p>
+
+<br>
+
+<div class="warning">
+
+🔒 NFT minting should be restricted
+to verified carbon assets.
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+MARKETPLACE
+===================================================== -->
+
+<section id="market">
+
+<div class="title">
+
+<div class="eyebrow">
+WEB3 MARKETPLACE
+</div>
+
+<h2>
+💰 Carbon Assets
+</h2>
+
+<p>
+Verified and legally transferable
+assets only.
+</p>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card">
+
+<div class="cardIcon">
+🌳
+</div>
+
+<h3>
+Bamboo Carbon
+</h3>
+
+<p>
+Nature-based agricultural project.
+</p>
+
+<div class="price">
+Verified
+</div>
