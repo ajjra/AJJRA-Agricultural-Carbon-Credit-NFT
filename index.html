@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>AJJRA | Agricultural Carbon Web3</title>
+
+<!-- Ethers -->
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+
+<!-- Leaflet -->
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+*{
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+font-family:
+Inter,
+Arial,
+Helvetica,
+sans-serif;
+background:
+linear-gradient(
+180deg,
+#f4fbf6 0%,
+#eef7f1 100%
+);
+color:#15251b;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header{
+position:sticky;
+top:0;
+z-index:3000;
+
+height:68px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 18px;
+
+background:
+rgba(4,62,34,.96);
+
+color:white;
+
+box-shadow:
+0 8px 30px rgba(0,0,0,.18);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:8px;
+
+font-size:22px;
+font-weight:900;
+letter-spacing:.4px;
+}
+
+.logo-icon{
+width:40px;
+height:40px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:13px;
+
+background:
+linear-gradient(
+135deg,
+#39d879,
+#08753e
+);
+
+box-shadow:
+0 5px 18px rgba(0,0,0,.25);
+}
+
+.logo span{
+color:#9dffbe;
+}
+
+.wallet-btn{
+border:0;
+
+background:white;
+color:#075b32;
+
+font-weight:800;
+
+padding:11px 15px;
+
+border-radius:13px;
+
+cursor:pointer;
+
+transition:.2s;
+}
+
+.wallet-btn:hover{
+transform:translateY(-1px);
+box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
+
+/* =====================================================
+   NAV
+===================================================== */
+
+nav{
+position:sticky;
+top:68px;
+z-index:2500;
+
+display:flex;
+gap:7px;
+
+padding:9px;
+
+overflow-x:auto;
+
+background:#063d23;
+
+scrollbar-width:none;
+}
+
+nav::-webkit-scrollbar{
+display:none;
+}
+
+nav button{
+border:0;
+
+white-space:nowrap;
+
+padding:10px 13px;
+
+border-radius:11px;
+
+background:transparent;
+
+color:#dff7e7;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.2s;
+}
+
+nav button:hover,
+nav button.active{
+background:#0b8b4a;
+color:white;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+width:min(1180px,94%);
+margin:auto;
+}
+
+.page{
+display:none;
+padding:24px 0 55px;
+}
+
+.page.active{
+display:block;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+position:relative;
+overflow:hidden;
+
+padding:32px 25px;
+
+border-radius:27px;
+
+background:
+linear-gradient(
+135deg,
+#064d2a,
+#0b8d49 55%,
+#19b75d
+);
+
+color:white;
+
+box-shadow:
+0 15px 45px rgba(0,75,40,.22);
+}
+
+.hero:after{
+content:"";
+
+position:absolute;
+
+width:230px;
+height:230px;
+
+right:-80px;
+top:-80px;
+
+border-radius:50%;
+
+background:
+rgba(255,255,255,.10);
+}
+
+.hero h1{
+position:relative;
+z-index:2;
+
+font-size:36px;
+margin:0 0 10px;
+
+line-height:1.15;
+}
+
+.hero p{
+position:relative;
+z-index:2;
+
+max-width:720px;
+
+line-height:1.7;
+
+color:#e7fff0;
+}
+
+.hero-actions{
+position:relative;
+z-index:2;
+
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+
+margin-top:20px;
+}
+
+.hero-btn{
+border:0;
+
+padding:13px 18px;
+
+border-radius:13px;
+
+font-weight:800;
+
+cursor:pointer;
+}
+
+.hero-primary{
+background:white;
+color:#075b32;
+}
+
+.hero-secondary{
+background:rgba(255,255,255,.15);
+color:white;
+border:1px solid rgba(255,255,255,.25);
+}
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.grid{
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(210px,1fr)
+);
+
+gap:15px;
+
+margin-top:18px;
+}
+
+.card{
+background:white;
+
+padding:20px;
+
+border-radius:20px;
+
+box-shadow:
+0 8px 30px rgba(18,65,35,.07);
+
+border:1px solid #e1eee5;
+}
+
+.card h3{
+margin-top:0;
+}
+
+.stat-card{
+position:relative;
+overflow:hidden;
+}
+
+.stat-icon{
+font-size:27px;
+}
+
+.stat{
+font-size:30px;
+
+font-weight:900;
+
+color:#08743d;
+
+margin-top:8px;
+}
+
+.stat-label{
+font-size:13px;
+color:#6b7c71;
+}
+
+/* =====================================================
+   FORMS
+===================================================== */
+
+.form{
+background:white;
+
+padding:22px;
+
+border-radius:21px;
+
+box-shadow:
+0 8px 30px rgba(18,65,35,.07);
+
+border:1px solid #e1eee5;
+}
+
+label{
+display:block;
+
+font-weight:800;
+
+margin-top:15px;
+}
+
+input,
+select,
+textarea{
+width:100%;
+
+padding:13px;
+
+margin-top:7px;
+
+border:
+1px solid #ceddd3;
+
+border-radius:11px;
+
+font-size:15px;
+
+outline:none;
+
+background:#fbfefc;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:#0a9650;
+
+box-shadow:
+0 0 0 3px rgba(10,150,80,.09);
+}
+
+.primary{
+width:100%;
+
+border:0;
+
+background:
+linear-gradient(
+135deg,
+#08743d,
+#0ca957
+);
+
+color:white;
+
+font-weight:900;
+
+padding:14px;
+
+border-radius:12px;
+
+font-size:16px;
+
+cursor:pointer;
+
+margin-top:18px;
+
+box-shadow:
+0 7px 18px rgba(8,116,61,.18);
+}
+
+.secondary{
+border:0;
+
+background:#e7f7ec;
+
+color:#075b32;
+
+padding:10px 13px;
+
+border-radius:10px;
+
+font-weight:800;
+
+cursor:pointer;
+}
+
+.danger{
+border:0;
+
+background:#ffe6e6;
+
+color:#a00000;
+
+padding:10px 13px;
+
+border-radius:10px;
+
+font-weight:800;
+
+cursor:pointer;
+}
+
+/* =====================================================
+   MAP
+===================================================== */
+
+.map-card{
+margin-top:20px;
+
+background:white;
+
+padding:18px;
+
+border-radius:21px;
+
+box-shadow:
+0 8px 30px rgba(18,65,35,.07);
+
+border:1px solid #e1eee5;
+}
+
+.map-title{
+font-size:20px;
+
+font-weight:900;
+
+color:#075b32;
+
+margin-bottom:12px;
+}
+
+.map-actions{
+display:flex;
+
+gap:8px;
+
+flex-wrap:wrap;
+
+margin-bottom:12px;
+}
+
+#farmMap{
+width:100%;
+
+height:430px;
+
+border-radius:17px;
+
+overflow:hidden;
+
+border:1px solid #d5e5da;
+}
+
+.map-info{
+display:grid;
+
+grid-template-columns:
