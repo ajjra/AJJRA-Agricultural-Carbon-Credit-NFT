@@ -1,0 +1,3930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>AJJRA | Agricultural Carbon Web3</title>
+
+<!-- Ethers -->
+<script src="https://cdn.jsdelivr.net/npm/ethers@6.15.0/dist/ethers.umd.min.js"></script>
+
+<!-- Leaflet -->
+<link
+rel="stylesheet"
+href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+<style>
+
+/* =====================================================
+   GLOBAL
+===================================================== */
+
+*{
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+margin:0;
+font-family:
+Inter,
+Arial,
+Helvetica,
+sans-serif;
+background:
+linear-gradient(
+180deg,
+#f4fbf6 0%,
+#eef7f1 100%
+);
+color:#15251b;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+header{
+position:sticky;
+top:0;
+z-index:3000;
+
+height:68px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 18px;
+
+background:
+rgba(4,62,34,.96);
+
+color:white;
+
+box-shadow:
+0 8px 30px rgba(0,0,0,.18);
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:8px;
+
+font-size:22px;
+font-weight:900;
+letter-spacing:.4px;
+}
+
+.logo-icon{
+width:40px;
+height:40px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:13px;
+
+background:
+linear-gradient(
+135deg,
+#39d879,
+#08753e
+);
+
+box-shadow:
+0 5px 18px rgba(0,0,0,.25);
+}
+
+.logo span{
+color:#9dffbe;
+}
+
+.wallet-btn{
+border:0;
+
+background:white;
+color:#075b32;
+
+font-weight:800;
+
+padding:11px 15px;
+
+border-radius:13px;
+
+cursor:pointer;
+
+transition:.2s;
+}
+
+.wallet-btn:hover{
+transform:translateY(-1px);
+box-shadow:0 6px 18px rgba(0,0,0,.2);
+}
+
+/* =====================================================
+   NAV
+===================================================== */
+
+nav{
+position:sticky;
+top:68px;
+z-index:2500;
+
+display:flex;
+gap:7px;
+
+padding:9px;
+
+overflow-x:auto;
+
+background:#063d23;
+
+scrollbar-width:none;
+}
+
+nav::-webkit-scrollbar{
+display:none;
+}
+
+nav button{
+border:0;
+
+white-space:nowrap;
+
+padding:10px 13px;
+
+border-radius:11px;
+
+background:transparent;
+
+color:#dff7e7;
+
+font-weight:700;
+
+cursor:pointer;
+
+transition:.2s;
+}
+
+nav button:hover,
+nav button.active{
+background:#0b8b4a;
+color:white;
+}
+
+/* =====================================================
+   CONTAINER
+===================================================== */
+
+.container{
+width:min(1180px,94%);
+margin:auto;
+}
+
+.page{
+display:none;
+padding:24px 0 55px;
+}
+
+.page.active{
+display:block;
+}
+
+/* =====================================================
+   HERO
+===================================================== */
+
+.hero{
+position:relative;
+overflow:hidden;
+
+padding:32px 25px;
+
+border-radius:27px;
+
+background:
+linear-gradient(
+135deg,
+#064d2a,
+#0b8d49 55%,
+#19b75d
+);
+
+color:white;
+
+box-shadow:
+0 15px 45px rgba(0,75,40,.22);
+}
+
+.hero:after{
+content:"";
+
+position:absolute;
+
+width:230px;
+height:230px;
+
+right:-80px;
+top:-80px;
+
+border-radius:50%;
+
+background:
+rgba(255,255,255,.10);
+}
+
+.hero h1{
+position:relative;
+z-index:2;
+
+font-size:36px;
+margin:0 0 10px;
+
+line-height:1.15;
+}
+
+.hero p{
+position:relative;
+z-index:2;
+
+max-width:720px;
+
+line-height:1.7;
+
+color:#e7fff0;
+}
+
+.hero-actions{
+position:relative;
+z-index:2;
+
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+
+margin-top:20px;
+}
+
+.hero-btn{
+border:0;
+
+padding:13px 18px;
+
+border-radius:13px;
+
+font-weight:800;
+
+cursor:pointer;
+}
+
+.hero-primary{
+background:white;
+color:#075b32;
+}
+
+.hero-secondary{
+background:rgba(255,255,255,.15);
+color:white;
+border:1px solid rgba(255,255,255,.25);
+}
+
+/* =====================================================
+   GRID
+===================================================== */
+
+.grid{
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(210px,1fr)
+);
+
+gap:15px;
+
+margin-top:18px;
+}
+
+.card{
+background:white;
+
+padding:20px;
+
+border-radius:20px;
+
+box-shadow:
+0 8px 30px rgba(18,65,35,.07);
+
+border:1px solid #e1eee5;
+}
+
+.card h3{
+margin-top:0;
+}
+
+.stat-card{
+position:relative;
+overflow:hidden;
+}
+
+.stat-icon{
+font-size:27px;
+}
+
+.stat{
+font-size:30px;
+
+font-weight:900;
+
+color:#08743d;
+
+margin-top:8px;
+}
+
+.stat-label{
+font-size:13px;
+color:#6b7c71;
+}
+
+/* =====================================================
+   FORMS
+===================================================== */
+
+.form{
+background:white;
+
+padding:22px;
+
+border-radius:21px;
+
+box-shadow:
+0 8px 30px rgba(18,65,35,.07);
+
+border:1px solid #e1eee5;
+}
+
+label{
+display:block;
+
+font-weight:800;
+
+margin-top:15px;
+}
+
+input,
+select,
+textarea{
+width:100%;
+
+padding:13px;
+
+margin-top:7px;
+
+border:
+1px solid #ceddd3;
+
+border-radius:11px;
+
+font-size:15px;
+
+outline:none;
+
+background:#fbfefc;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+border-color:#0a9650;
+
+box-shadow:
+0 0 0 3px rgba(10,150,80,.09);
+}
+
+.primary{
+width:100%;
+
+border:0;
+
+background:
+linear-gradient(
+135deg,
+#08743d,
+#0ca957
+);
+
+color:white;
+
+font-weight:900;
+
+padding:14px;
+
+border-radius:12px;
+
+font-size:16px;
+
+cursor:pointer;
+
+margin-top:18px;
+
+box-shadow:
+0 7px 18px rgba(8,116,61,.18);
+}
+
+.secondary{
+border:0;
+
+background:#e7f7ec;
+
+color:#075b32;
+
+padding:10px 13px;
+
+border-radius:10px;
+
+font-weight:800;
+
+cursor:pointer;
+}
+
+.danger{
+border:0;
+
+background:#ffe6e6;
+
+color:#a00000;
+
+padding:10px 13px;
+
+border-radius:10px;
+
+font-weight:800;
+
+cursor:pointer;
+}
+
+/* =====================================================
+   MAP
+===================================================== */
+
+.map-card{
+margin-top:20px;
+
+background:white;
+
+padding:18px;
+
+border-radius:21px;
+
+box-shadow:
+0 8px 30px rgba(18,65,35,.07);
+
+border:1px solid #e1eee5;
+}
+
+.map-title{
+font-size:20px;
+
+font-weight:900;
+
+color:#075b32;
+
+margin-bottom:12px;
+}
+
+.map-actions{
+display:flex;
+
+gap:8px;
+
+flex-wrap:wrap;
+
+margin-bottom:12px;
+}
+
+#farmMap{
+width:100%;
+
+height:430px;
+
+border-radius:17px;
+
+overflow:hidden;
+
+border:1px solid #d5e5da;
+}
+
+.map-info{
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(150px,1fr)
+);
+
+gap:10px;
+
+margin-top:12px;
+}
+
+.map-info div{
+background:#f1f8f3;
+
+padding:12px;
+
+border-radius:12px;
+
+font-size:13px;
+}
+
+.map-info strong{
+display:block;
+
+font-size:15px;
+
+color:#08743d;
+
+margin-top:4px;
+}
+
+/* =====================================================
+   TREE CARDS
+===================================================== */
+
+.tree-grid{
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(180px,1fr)
+);
+
+gap:12px;
+
+margin-top:15px;
+}
+
+.tree{
+background:white;
+
+border:1px solid #dce9df;
+
+padding:16px;
+
+border-radius:16px;
+
+box-shadow:
+0 5px 18px rgba(0,0,0,.04);
+}
+
+.tree-icon{
+font-size:28px;
+}
+
+.tree strong{
+display:block;
+
+color:#08743d;
+
+font-size:17px;
+
+margin-top:5px;
+}
+
+.tree-value{
+margin-top:8px;
+
+font-weight:800;
+}
+
+.tree-note{
+font-size:11px;
+
+color:#738078;
+
+margin-top:6px;
+}
+
+/* =====================================================
+   RESULT
+===================================================== */
+
+.result{
+margin-top:20px;
+
+background:
+linear-gradient(
+135deg,
+#e9f9ee,
+#f7fff9
+);
+
+border:1px solid #bce5c8;
+
+border-radius:17px;
+
+padding:20px;
+}
+
+.big{
+font-size:37px;
+
+font-weight:900;
+
+color:#08743d;
+
+margin-top:5px;
+}
+
+/* =====================================================
+   PHOTO
+===================================================== */
+
+.photo{
+width:100%;
+
+max-height:270px;
+
+object-fit:cover;
+
+border-radius:15px;
+
+display:none;
+
+margin-top:10px;
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
+
+.table-wrap{
+overflow-x:auto;
+
+border-radius:15px;
+
+border:1px solid #e2ece5;
+}
+
+table{
+width:100%;
+
+border-collapse:collapse;
+
+background:white;
+}
+
+th,
+td{
+padding:12px;
+
+border-bottom:
+1px solid #e5ece7;
+
+text-align:left;
+
+white-space:nowrap;
+}
+
+th{
+background:#e9f6ed;
+
+color:#075b32;
+}
+
+.badge{
+padding:5px 10px;
+
+border-radius:20px;
+
+font-size:12px;
+
+font-weight:900;
+
+display:inline-block;
+}
+
+.pending{
+background:#fff1c7;
+color:#765800;
+}
+
+.verified{
+background:#d8f7e2;
+color:#08743d;
+}
+
+.retired{
+background:#e5e7eb;
+color:#374151;
+}
+
+/* =====================================================
+   NETWORK
+===================================================== */
+
+.network{
+background:#edf9f1;
+
+border:1px solid #c5e7cf;
+
+border-radius:15px;
+
+padding:16px;
+
+line-height:1.9;
+}
+
+.address{
+word-break:break-all;
+
+background:#f0f4f1;
+
+padding:13px;
+
+border-radius:11px;
+
+margin-top:10px;
+
+font-size:13px;
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status-online{
+display:inline-flex;
+
+align-items:center;
+
+gap:7px;
+
+background:#e1f8e8;
+
+color:#08743d;
+
+padding:6px 10px;
+
+border-radius:20px;
+
+font-size:12px;
+
+font-weight:800;
+}
+
+.dot{
+width:8px;
+height:8px;
+
+border-radius:50%;
+
+background:#13bd5b;
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.modal{
+display:none;
+
+position:fixed;
+
+inset:0;
+
+z-index:6000;
+
+background:rgba(0,0,0,.68);
+
+align-items:center;
+
+justify-content:center;
+
+padding:20px;
+}
+
+.modal-box{
+background:white;
+
+width:min(500px,100%);
+
+padding:25px;
+
+border-radius:21px;
+
+box-shadow:
+0 20px 70px rgba(0,0,0,.3);
+}
+
+.close{
+float:right;
+
+font-size:28px;
+
+cursor:pointer;
+
+color:#555;
+}
+
+/* =====================================================
+   FOOTER
+===================================================== */
+
+footer{
+background:#043d22;
+
+color:white;
+
+text-align:center;
+
+padding:35px 15px;
+
+margin-top:40px;
+}
+
+.footer-brand{
+font-size:22px;
+
+font-weight:900;
+}
+
+.small{
+font-size:12px;
+
+color:#6b7b70;
+
+line-height:1.6;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:600px){
+
+header{
+height:62px;
+}
+
+nav{
+top:62px;
+}
+
+.logo{
+font-size:18px;
+}
+
+.logo-icon{
+width:34px;
+height:34px;
+}
+
+.wallet-btn{
+padding:9px 10px;
+
+font-size:12px;
+}
+
+.hero{
+padding:27px 20px;
+}
+
+.hero h1{
+font-size:27px;
+}
+
+#farmMap{
+height:350px;
+}
+
+.map-actions button{
+flex:1;
+
+min-width:125px;
+}
+
+th,
+td{
+font-size:12px;
+}
+
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+.loading{
+display:none;
+
+position:fixed;
+
+inset:0;
+
+z-index:7000;
+
+background:rgba(255,255,255,.78);
+
+align-items:center;
+
+justify-content:center;
+}
+
+.loading-box{
+background:white;
+
+padding:25px 30px;
+
+border-radius:18px;
+
+box-shadow:
+0 15px 50px rgba(0,0,0,.2);
+
+text-align:center;
+}
+
+.spinner{
+width:35px;
+height:35px;
+
+border:
+4px solid #dceee2;
+
+border-top-color:#08743d;
+
+border-radius:50%;
+
+animation:spin 1s linear infinite;
+
+margin:auto auto 12px;
+}
+
+@keyframes spin{
+to{
+transform:rotate(360deg);
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
+<header>
+
+<div class="logo">
+
+<div class="logo-icon">
+🌱
+</div>
+
+<div>
+AJJRA <span>CARBON</span>
+</div>
+
+</div>
+
+<button
+class="wallet-btn"
+id="walletButton"
+onclick="connectWallet()">
+
+Connect Wallet
+
+</button>
+
+</header>
+
+
+<!-- =====================================================
+     NAV
+===================================================== -->
+
+<nav id="mainNav">
+
+<button
+class="active"
+onclick="showPage('home',this)">
+🏠 Home
+</button>
+
+<button
+onclick="showPage('register',this)">
+🌱 Register
+</button>
+
+<button
+onclick="showPage('calculator',this)">
+🧮 Calculator
+</button>
+
+<button
+onclick="showPage('plants',this)">
+🌳 Plants
+</button>
+
+<button
+onclick="showPage('credits',this)">
+🪙 Credits
+</button>
+
+<button
+onclick="showPage('nft',this)">
+🎨 NFT
+</button>
+
+<button
+onclick="showPage('wallet',this)">
+👛 Wallet
+</button>
+
+</nav>
+
+
+<main class="container">
+
+
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<section
+id="home"
+class="page active">
+
+<div class="hero">
+
+<h1>
+AJJRA Agricultural Carbon
+</h1>
+
+<p>
+A modern GreenTech platform for agricultural
+plant registration, satellite farm mapping,
+carbon estimation, verification workflow,
+carbon retirement and Web3 integration.
+</p>
+
+<div class="hero-actions">
+
+<button
+class="hero-btn hero-primary"
+onclick="showPage('register')">
+
+🌱 Register Farm
+
+</button>
+
+<button
+class="hero-btn hero-secondary"
+onclick="showPage('calculator')">
+
+🧮 Calculate Carbon
+
+</button>
+
+</div>
+
+</div>
+
+
+<div class="grid">
+
+<div class="card stat-card">
+
+<div class="stat-icon">
+🌳
+</div>
+
+<div class="stat"
+id="totalPlants">
+0
+</div>
+
+<div class="stat-label">
+Registered Plants
+</div>
+
+</div>
+
+
+<div class="card stat-card">
+
+<div class="stat-icon">
+🌍
+</div>
+
+<div class="stat"
+id="totalCarbon">
+0
+</div>
+
+<div class="stat-label">
+Estimated kg CO₂e
+</div>
+
+</div>
+
+
+<div class="card stat-card">
+
+<div class="stat-icon">
+🪙
+</div>
+
+<div class="stat"
+id="totalCredits">
+0
+</div>
+
+<div class="stat-label">
+Estimated tCO₂e
+</div>
+
+</div>
+
+
+<div class="card stat-card">
+
+<div class="stat-icon">
+♻️
+</div>
+
+<div class="stat"
+id="retiredCredits">
+0
+</div>
+
+<div class="stat-label">
+Retired tCO₂e
+</div>
+
+</div>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:20px">
+
+<h3>
+⛓️ AJJRA Web3 Workflow
+</h3>
+
+<div class="grid">
+
+<div>🌱 Farm Registration</div>
+<div>🛰️ Satellite Evidence</div>
+<div>📍 GPS Mapping</div>
+<div>📷 Plant Photo</div>
+<div>🧮 Carbon Estimation</div>
+<div>🔎 Verification</div>
+<div>🪙 Carbon Credit</div>
+<div>🎨 Carbon NFT</div>
+<div>♻️ Retirement</div>
+<div>⛓️ MST Mainnet</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     REGISTER
+===================================================== -->
+
+<section
+id="register"
+class="page">
+
+<h2>🌱 Register Farm / Plant</h2>
+
+<div class="form">
+
+<label>
+Owner Name
+</label>
+
+<input
+id="ownerName"
+placeholder="Enter owner name">
+
+
+<label>
+Farm Name
+</label>
+
+<input
+id="farmName"
+placeholder="Enter farm name">
+
+
+<label>
+Plant Type
+</label>
+
+<select id="treeType">
+
+<option>Bamboo</option>
+<option>Coconut</option>
+<option>Rubber</option>
+<option>Mango</option>
+<option>Teak</option>
+<option>Neem</option>
+<option>Mahogany</option>
+<option>Jackfruit</option>
+<option>Cashew</option>
+<option>Banana</option>
+<option>Coffee</option>
+<option>Cocoa</option>
+<option>Rice</option>
+<option>Spices</option>
+<option>Agroforestry</option>
+
+</select>
+
+
+<label>
+Number of Plants
+</label>
+
+<input
+id="plantCount"
+type="number"
+min="1"
+value="1">
+
+
+<label>
+Average Age (Years)
+</label>
+
+<input
+id="plantAge"
+type="number"
+min="0"
+value="1">
+
+
+<label>
+Farm Area (Acres)
+</label>
+
+<input
+id="farmArea"
+type="number"
+step="0.0001"
+min="0"
+value="1">
+
+
+<label>
+GPS Coordinates
+</label>
+
+<div
+style="
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:8px;
+">
+
+<input
+id="latitude"
+placeholder="Latitude">
+
+<input
+id="longitude"
+placeholder="Longitude">
+
+</div>
+
+
+<button
+type="button"
+class="secondary"
+onclick="locateFarm()"
+style="margin-top:10px">
+
+📍 Use My Location
+
+</button>
+
+</div>
+
+
+<!-- MAP -->
+
+<div class="map-card">
+
+<div class="map-title">
+🛰️ Satellite Farm Map
+</div>
+
+<div class="map-actions">
+
+<button
+class="secondary"
+onclick="locateFarm()">
+
+📍 My Location
+
+</button>
+
+<button
+class="secondary"
+onclick="toggleSatellite()">
+
+🛰️ Satellite
+
+</button>
+
+<button
+class="secondary"
+onclick="startFarmBoundary()">
+
+🌾 Draw Farm
+
+</button>
+
+<button
+class="secondary"
+onclick="clearFarmMap()">
+
+🗑️ Clear
+
+</button>
+
+</div>
+
+
+<div id="farmMap"></div>
+
+
+<div class="map-info">
+
+<div>
+📍 Latitude
+<strong id="mapLat">-</strong>
+</div>
+
+<div>
+📍 Longitude
+<strong id="mapLng">-</strong>
+</div>
+
+<div>
+📐 Farm Area
+<strong id="mapArea">0 m²</strong>
+</div>
+
+</div>
+
+</div>
+
+
+<div class="form"
+style="margin-top:20px">
+
+<label>
+Plant / Farm Photo
+</label>
+
+<input
+id="plantPhoto"
+type="file"
+accept="image/*"
+capture="environment"
+onchange="previewPhoto(event)">
+
+<img
+id="photoPreview"
+class="photo">
+
+
+<label>
+Notes
+</label>
+
+<textarea
+id="notes"
+rows="4"
+placeholder="Farm / plant information">
+</textarea>
+
+
+<button
+class="primary"
+onclick="registerPlant()">
+
+🌱 Register Plant
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CALCULATOR
+===================================================== -->
+
+<section
+id="calculator"
+class="page">
+
+<h2>🧮 Carbon Calculator</h2>
+
+<div class="form">
+
+<label>
+Plant Type
+</label>
+
+<select
+id="calcTree"
+onchange="calculateCarbon()">
+
+<option>Bamboo</option>
+<option>Coconut</option>
+<option>Rubber</option>
+<option>Mango</option>
+<option>Teak</option>
+<option>Neem</option>
+<option>Mahogany</option>
+<option>Jackfruit</option>
+<option>Cashew</option>
+<option>Banana</option>
+<option>Coffee</option>
+<option>Cocoa</option>
+<option>Rice</option>
+<option>Spices</option>
+<option>Agroforestry</option>
+
+</select>
+
+
+<label>
+Number of Plants
+</label>
+
+<input
+id="calcCount"
+type="number"
+min="1"
+value="1"
+oninput="calculateCarbon()">
+
+
+<label>
+Average Age
+</label>
+
+<input
+id="calcAge"
+type="number"
+min="0"
+value="1"
+oninput="calculateCarbon()">
+
+
+<div class="result">
+
+<div>
+Estimated Carbon
+</div>
+
+<div
+class="big"
+id="carbonResult">
+
+0 kg CO₂e
+
+</div>
+
+<p id="creditResult">
+0 estimated tCO₂e
+</p>
+
+<div class="small">
+
+⚠️ This is an application estimate.
+Official carbon credits require an approved
+methodology, evidence, validation and verification.
+
+</div>
+
+</div>
+
+</div>
+
+
+<h3>
+🌳 Tree Carbon Reference
+</h3>
+
+<div
+id="treeList"
+class="tree-grid">
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     PLANTS
+===================================================== -->
+
+<section
+id="plants"
+class="page">
+
+<h2>🌳 Registered Plants</h2>
+
+<div class="card">
+
+<div class="table-wrap">
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Plant</th>
+<th>Count</th>
+<th>Age</th>
+<th>CO₂e</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody
+id="plantTable">
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     CREDITS
+===================================================== -->
+
+<section
+id="credits"
+class="page">
+
+<h2>🪙 Carbon Credits</h2>
+
+<div class="grid">
+
+<div class="card">
+
+<h3>Total</h3>
+
+<div
+class="stat"
+id="creditPageTotal">
+0
+</div>
+
+tCO₂e
+
+</div>
+
+
+<div class="card">
+
+<h3>Verified</h3>
+
+<div
+class="stat"
+id="verifiedCredits">
+0
+</div>
+
+tCO₂e
+
+</div>
+
+
+<div class="card">
+
+<h3>Retired</h3>
+
+<div
+class="stat"
+id="retiredPageTotal">
+0
+</div>
+
+tCO₂e
+
+</div>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:20px">
+
+<h3>
+♻️ Retire Carbon
+</h3>
+
+<input
+id="retireAmount"
+type="number"
+min="0"
+step="0.001"
+placeholder="Amount in tCO₂e">
+
+
+<button
+class="primary"
+onclick="retireCarbon()">
+
+♻️ Retire Carbon
+
+</button>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     NFT
+===================================================== -->
+
+<section
+id="nft"
+class="page">
+
+<h2>🎨 Carbon NFT</h2>
+
+<div class="card">
+
+<p>
+Mint an NFT only after the carbon record
+has been properly verified.
+</p>
+
+
+<label>
+Verified Plant
+</label>
+
+<select id="nftPlant">
+</select>
+
+
+<label>
+IPFS Metadata URI
+</label>
+
+<input
+id="metadataURI"
+placeholder="ipfs://...">
+
+
+<label>
+NFT Contract Address
+</label>
+
+<input
+id="nftContract"
+placeholder="0x...">
+
+
+<button
+class="primary"
+onclick="mintNFT()">
+
+🎨 Mint Carbon NFT
+
+</button>
+
+
+<div
+class="result"
+id="nftResult"
+style="display:none">
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =====================================================
+     WALLET
+===================================================== -->
+
+<section
+id="wallet"
+class="page">
+
+<h2>👛 Web3 Wallet</h2>
+
+
+<div class="card">
+
+<h3>
+Wallet Status
+</h3>
+
+<div
+class="status-online"
+id="walletStatusBadge">
+
+<span class="dot"></span>
+
+Not Connected
+
+</div>
+
+
+<div
+class="address"
+id="walletAddress">
+
+No wallet connected
+
+</div>
+
+
+<button
+class="primary"
+onclick="connectWallet()">
+
+🔗 Connect Wallet
+
+</button>
+
+</div>
+
+
+<div
+class="card"
+style="margin-top:20px">
+
+<h3>
+⛓️ MST Mainnet
+</h3>
+
+
+<div class="network">
+
+Network:
+<strong>MST Mainnet</strong>
+
+<br>
+
+Chain ID:
+<strong>4646</strong>
+
+<br>
+
+Hex:
+<strong>0x1226</strong>
+
+<br>
+
+Native Token:
+<strong>MSTC</strong>
+
+<br>
+
+RPC:
+<strong>
+https://4646.rpc.thirdweb.com
+</strong>
+
+<br>
+
+Explorer:
+<strong>
+mstscan.com
+</strong>
+
+</div>
+
+
+<button
+class="primary"
+onclick="addMSTNetwork()">
+
+➕ Add MST Mainnet
+
+</button>
+
+
+<button
+class="primary"
+onclick="switchMSTNetwork()">
+
+🔄 Switch to MST Mainnet
+
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+<div class="footer-brand">
+🌱 AJJRA TECHNO HUB
+</div>
+
+<p>
+Agriculture • Carbon • Blockchain • NFT
+</p>
+
+<p class="small"
+style="color:#ccebd6">
+
+AJJRA Agricultural Carbon Credit Platform
+
+</p>
+
+</footer>
+
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+class="modal"
+id="modal">
+
+<div class="modal-box">
+
+<span
+class="close"
+onclick="closeModal()">
+×
+</span>
+
+<h2 id="modalTitle">
+AJJRA
+</h2>
+
+<p
+id="modalText">
+</p>
+
+<button
+class="primary"
+onclick="closeModal()">
+
+OK
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     LOADING
+===================================================== -->
+
+<div
+class="loading"
+id="loading">
+
+<div class="loading-box">
+
+<div class="spinner"></div>
+
+<strong id="loadingText">
+Please wait...
+</strong>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   MST MAINNET
+===================================================== */
+
+const MST_MAINNET={
+
+chainId:"0x1226",
+
+chainName:"MST Mainnet",
+
+nativeCurrency:{
+name:"MSTC",
+symbol:"MSTC",
+decimals:18
+},
+
+rpcUrls:[
+"https://4646.rpc.thirdweb.com"
+],
+
+blockExplorerUrls:[
+"https://mstscan.com"
+]
+
+};
+
+
+/* =====================================================
+   CARBON TREE DATABASE
+===================================================== */
+
+const TREE_VALUES={
+
+Bamboo:1200,
+
+Coconut:600,
+
+Rubber:900,
+
+Mango:700,
+
+Teak:1000,
+
+Neem:650,
+
+Mahogany:1100,
+
+Jackfruit:750,
+
+Cashew:550,
+
+Banana:250,
+
+Coffee:400,
+
+Cocoa:500,
+
+Rice:100,
+
+Spices:200,
+
+Agroforestry:800
+
+};
+
+
+/* =====================================================
+   STORAGE
+===================================================== */
+
+let plants=
+JSON.parse(
+localStorage.getItem(
+"AJJRA_PLANTS"
+)||"[]"
+);
+
+let retired=
+Number(
+localStorage.getItem(
+"AJJRA_RETIRED"
+)||"0"
+);
+
+let walletAddress=null;
+
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+function showModal(title,text){
+
+document.getElementById(
+"modalTitle"
+).innerText=title;
+
+document.getElementById(
+"modalText"
+).innerText=text;
+
+document.getElementById(
+"modal"
+).style.display="flex";
+
+}
+
+function closeModal(){
+
+document.getElementById(
+"modal"
+).style.display="none";
+
+}
+
+
+/* =====================================================
+   LOADING
+===================================================== */
+
+function loading(show,text){
+
+document.getElementById(
+"loadingText"
+).innerText=
+text||"Please wait...";
+
+document.getElementById(
+"loading"
+).style.display=
+show?"flex":"none";
+
+}
+
+
+/* =====================================================
+   PAGE NAVIGATION
+===================================================== */
+
+function showPage(id,button){
+
+document
+.querySelectorAll(".page")
+.forEach(
+page=>{
+page.classList.remove("active");
+}
+);
+
+document
+.getElementById(id)
+.classList.add("active");
+
+
+document
+.querySelectorAll("nav button")
+.forEach(
+btn=>{
+btn.classList.remove("active");
+}
+);
+
+if(button){
+button.classList.add("active");
+}
+
+
+updateDashboard();
+
+
+if(id==="register"){
+
+setTimeout(
+()=>{
+
+initFarmMap();
+
+if(farmMap){
+farmMap.invalidateSize();
+}
+
+},
+300
+);
+
+}
+
+}
+
+
+/* =====================================================
+   MAP VARIABLES
+===================================================== */
+
+let farmMap=null;
+
+let satelliteLayer=null;
+
+let normalLayer=null;
+
+let farmMarker=null;
+
+let farmPolygon=null;
+
+let farmBoundary=[];
+
+let drawingBoundary=false;
+
+
+/* =====================================================
+   MAP INIT
+===================================================== */
+
+function initFarmMap(){
+
+if(farmMap)
+return;
+
+
+farmMap=
+L.map("farmMap")
+.setView(
+[10.8505,76.2711],
+10
+);
+
+
+/* NORMAL */
+
+normalLayer=
+L.tileLayer(
+"https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+maxZoom:19,
+attribution:
+"© OpenStreetMap contributors"
+}
+);
+
+
+/* SATELLITE */
+
+satelliteLayer=
+L.tileLayer(
+"https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+{
+maxZoom:19,
+attribution:
+"© Esri, Maxar, Earthstar Geographics"
+}
+);
+
+
+/* Default */
+
+normalLayer.addTo(
+farmMap
+);
+
+
+/* Layer control */
+
+L.control.layers(
+{
+"🗺️ Normal":normalLayer,
+"🛰️ Satellite":satelliteLayer
+}
+).addTo(farmMap);
+
+
+/* Map click */
+
+farmMap.on(
+"click",
+function(e){
+
+if(drawingBoundary){
+
+addBoundaryPoint(
+e.latlng.lat,
+e.latlng.lng
+);
+
+return;
+}
+
+setFarmLocation(
+e.latlng.lat,
+e.latlng.lng
+);
+
+}
+);
+
+}
+
+
+/* =====================================================
+   SATELLITE TOGGLE
+===================================================== */
+
+function toggleSatellite(){
+
+if(!farmMap)
+initFarmMap();
+
+if(
+farmMap.hasLayer(
+satelliteLayer
+)
+){
+
+farmMap.removeLayer(
+satelliteLayer
+);
+
+normalLayer.addTo(
+farmMap
+);
+
+}else{
+
+farmMap.removeLayer(
+normalLayer
+);
+
+satelliteLayer.addTo(
+farmMap
+);
+
+}
+
+}
+
+
+/* =====================================================
+   GPS
+===================================================== */
+
+function locateFarm(){
+
+if(!navigator.geolocation){
+
+showModal(
+"GPS Error",
+"Your browser does not support GPS."
+);
+
+return;
+
+}
+
+loading(
+true,
+"Getting GPS location..."
+);
+
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+loading(false);
+
+const lat=
+position.coords.latitude;
+
+const lng=
+position.coords.longitude;
+
+setFarmLocation(
+lat,
+lng
+);
+
+farmMap.setView(
+[lat,lng],
+18
+);
+
+},
+
+function(error){
+
+loading(false);
+
+showModal(
+"GPS Error",
+"Location permission was denied or unavailable."
+);
+
+},
+
+{
+enableHighAccuracy:true,
+timeout:15000,
+maximumAge:0
+}
+
+);
+
+}
+
+
+/* =====================================================
+   FARM LOCATION
+===================================================== */
+
+function setFarmLocation(lat,lng){
+
+if(!farmMap)
+initFarmMap();
+
+
+document.getElementById(
+"latitude"
+).value=
+lat.toFixed(7);
+
+document.getElementById(
+"longitude"
+).value=
+lng.toFixed(7);
+
+
+document.getElementById(
+"mapLat"
+).innerText=
+lat.toFixed(7);
+
+document.getElementById(
+"mapLng"
+).innerText=
+lng.toFixed(7);
+
+
+if(farmMarker){
+
+farmMarker.setLatLng(
+[lat,lng]
+);
+
+}else{
+
+farmMarker=
+L.marker(
+[lat,lng]
+)
+.addTo(farmMap)
+.bindPopup(
+"🌱 AJJRA Farm Location"
+)
+.openPopup();
+
+}
+
+}
+
+
+/* =====================================================
+   START FARM DRAW
+===================================================== */
+
+function startFarmBoundary(){
+
+if(!farmMap)
+initFarmMap();
+
+
+drawingBoundary=true;
+
+farmBoundary=[];
+
+
+if(farmPolygon){
+
+farmMap.removeLayer(
+farmPolygon
+);
+
+farmPolygon=null;
+
+}
+
+
+showModal(
+"Draw Farm Boundary",
+"Now tap the corners of your farm on the map. When finished, press Draw Farm again."
+);
+
+}
+
+
+/* =====================================================
+   ADD BOUNDARY POINT
+===================================================== */
+
+function addBoundaryPoint(lat,lng){
+
+farmBoundary.push(
+[lat,lng]
+);
+
+
+if(farmPolygon){
+
+farmMap.removeLayer(
+farmPolygon
+);
+
+}
+
+
+farmPolygon=
+L.polygon(
+farmBoundary,
+{
+color:"#00a84f",
+weight:3,
+fillColor:"#21c968",
+fillOpacity:.25
+}
+).addTo(farmMap);
+
+
+/* Automatic location */
+
+if(farmBoundary.length===1){
+
+setFarmLocation(
+lat,
+lng
+);
+
+}
+
+
+/* Calculate once >= 3 */
+
+if(
+farmBoundary.length>=3
+){
+
+calculateFarmArea();
+
+}
+
+}
+
+
+/* =====================================================
+   FARM AREA
+===================================================== */
+
+function calculateFarmArea(){
+
+if(
+farmBoundary.length<3
+)
+return;
+
+
+const R=6378137;
+
+let area=0;
+
+for(
+let i=0;
+i<farmBoundary.length;
+i++
+){
+
+const p1=
+farmBoundary[i];
+
+const p2=
+farmBoundary[
+(i+1)%
+farmBoundary.length
+];
+
+const lat1=
+p1[0]*Math.PI/180;
+
+const lat2=
+p2[0]*Math.PI/180;
+
+const lng1=
+p1[1]*Math.PI/180;
+
+const lng2=
+p2[1]*Math.PI/180;
+
+area+=
+(lng2-lng1)*
+(
+2+
+Math.sin(lat1)+
+Math.sin(lat2)
+);
+
+}
+
+area=
+Math.abs(
+area*R*R/2
+);
+
+
+let display="";
+
+if(
+area>=10000
+){
+
+display=
+(area/10000)
+.toFixed(3)+
+" hectares";
+
+}else{
+
+display=
+area.toFixed(1)+
+" m²";
+
+}
+
+
+document.getElementById(
+"mapArea"
+).innerText=
+display;
+
+
+/* Acres */
+
+const acres=
+area/4046.8564224;
+
+document.getElementById(
+"farmArea"
+).value=
+acres.toFixed(4);
+
+}
+
+
+/* =====================================================
+   CLEAR MAP
+===================================================== */
+
+function clearFarmMap(){
+
+farmBoundary=[];
+
+drawingBoundary=false;
+
+
+if(farmPolygon){
+
+farmMap.removeLayer(
+farmPolygon
+);
+
+farmPolygon=null;
+
+}
+
+if(farmMarker){
+
+farmMap.removeLayer(
+farmMarker
+);
+
+farmMarker=null;
+
+}
+
+
+document.getElementById(
+"mapLat"
+).innerText="-";
+
+document.getElementById(
+"mapLng"
+).innerText="-";
+
+document.getElementById(
+"mapArea"
+).innerText="0 m²";
+
+document.getElementById(
+"latitude"
+).value="";
+
+document.getElementById(
+"longitude"
+).value="";
+
+document.getElementById(
+"farmArea"
+).value="";
+
+}
+
+
+/* =====================================================
+   PHOTO
+===================================================== */
+
+function previewPhoto(event){
+
+const file=
+event.target.files[0];
+
+if(!file)
+return;
+
+
+const image=
+document.getElementById(
+"photoPreview"
+);
+
+image.src=
+URL.createObjectURL(
+file
+);
+
+image.style.display="block";
+
+}
+
+
+/* =====================================================
+   CARBON CALCULATOR
+===================================================== */
+
+function calculateCarbon(){
+
+const tree=
+document.getElementById(
+"calcTree"
+).value;
+
+const count=
+Number(
+document.getElementById(
+"calcCount"
+).value
+)||0;
+
+const age=
+Number(
+document.getElementById(
+"calcAge"
+).value
+)||0;
+
+
+const coefficient=
+TREE_VALUES[tree]||0;
+
+
+const ageFactor=
+Math.max(
+0.25,
+Math.min(
+1.5,
+0.5+(age*0.05)
+)
+);
+
+
+const carbon=
+coefficient*
+count*
+ageFactor;
+
+
+const credits=
+carbon/1000;
+
+
+document.getElementById(
+"carbonResult"
+).innerText=
+carbon.toFixed(2)+
+" kg CO₂e";
+
+
+document.getElementById(
+"creditResult"
+).innerText=
+credits.toFixed(3)+
+" estimated tCO₂e";
+
+}
+
+
+/* =====================================================
+   TREE LIST
+===================================================== */
+
+function loadTreeList(){
+
+const box=
+document.getElementById(
+"treeList"
+);
+
+box.innerHTML="";
+
+
+Object.entries(
+TREE_VALUES
+).forEach(
+([name,value])=>{
+
+const div=
+document.createElement(
+"div"
+);
+
+div.className="tree";
+
+div.innerHTML=`
+
+<div class="tree-icon">🌳</div>
+
+<strong>${name}</strong>
+
+<div class="tree-value">
+${value.toLocaleString()}
+kg CO₂e / plant / year
+</div>
+
+<div class="tree-note">
+Application estimation coefficient
+</div>
+
+`;
+
+box.appendChild(div);
+
+});
+
+}
+
+
+/* =====================================================
+   REGISTER PLANT
+===================================================== */
+
+function registerPlant(){
+
+const owner=
+document.getElementById(
+"ownerName"
+).value.trim();
+
+const farm=
+document.getElementById(
+"farmName"
+).value.trim();
+
+const tree=
+document.getElementById(
+"treeType"
+).value;
+
+const count=
+Number(
+document.getElementById(
+"plantCount"
+).value
+);
+
+const age=
+Number(
+document.getElementById(
+"plantAge"
+).value
+);
+
+const area=
+Number(
+document.getElementById(
+"farmArea"
+).value
+);
+
+const lat=
+document.getElementById(
+"latitude"
+).value;
+
+const lng=
+document.getElementById(
+"longitude"
+).value;
+
+const notes=
+document.getElementById(
+"notes"
+).value;
+
+
+if(!owner){
+
+showModal(
+"Owner Required",
+"Please enter owner name."
+);
+
+return;
+
+}
+
+
+if(!farm){
+
+showModal(
+"Farm Required",
+"Please enter farm name."
+);
+
+return;
+
+}
+
+
+if(
+!count||
+count<1
+){
+
+showModal(
+"Invalid Plant Count",
+"Please enter a valid plant count."
+);
+
+return;
+
+}
+
+
+const coefficient=
+TREE_VALUES[tree];
+
+
+const ageFactor=
+Math.max(
+0.25,
+Math.min(
+1.5,
+0.5+(age*0.05)
+)
+);
+
+
+const carbon=
+coefficient*
+count*
+ageFactor;
+
+
+const id=
+"AJJRA-"+Date.now();
+
+
+const record={
+
+id,
+
+owner,
+
+farm,
+
+tree,
+
+count,
+
+age,
+
+area,
+
+latitude:lat,
+
+longitude:lng,
+
+boundary:farmBoundary,
+
+notes,
+
+carbon,
+
+credits:carbon/1000,
+
+status:"Pending",
+
+verified:false,
+
+retired:false,
+
+wallet:
+walletAddress||"",
+
+createdAt:
+new Date().toISOString()
+
+};
+
+
+plants.push(record);
+
+
+localStorage.setItem(
+"AJJRA_PLANTS",
+JSON.stringify(
+plants
+)
+);
+
+
+showModal(
+"Registration Complete",
+"Farm / plant registered successfully.\n\nID: "+
+id+
+"\nEstimated Carbon: "+
+carbon.toFixed(2)+
+" kg CO₂e"
+);
+
+
+document.getElementById(
+"ownerName"
+).value="";
+
+document.getElementById(
+"farmName"
+).value="";
+
+document.getElementById(
+"plantCount"
+).value="1";
+
+document.getElementById(
+"plantAge"
+).value="1";
+
+document.getElementById(
+"farmArea"
+).value="1";
+
+document.getElementById(
+"latitude"
+).value="";
+
+document.getElementById(
+"longitude"
+).value="";
+
+document.getElementById(
+"notes"
+).value="";
+
+document.getElementById(
+"plantPhoto"
+).value="";
+
+document.getElementById(
+"photoPreview"
+).style.display="none";
+
+
+clearFarmMap();
+
+updateDashboard();
+
+}
+
+
+/* =====================================================
+   LOAD PLANTS
+===================================================== */
+
+function loadPlants(){
+
+const table=
+document.getElementById(
+"plantTable"
+);
+
+table.innerHTML="";
+
+
+if(
+plants.length===0
+){
+
+table.innerHTML=`
+
+<tr>
+
+<td colspan="6">
+
+No plants registered yet.
+
+</td>
+
+</tr>
+
+`;
+
+return;
+
+}
+
+
+plants.forEach(
+p=>{
+
+const tr=
+document.createElement(
+"tr"
+);
+
+
+const cls=
+p.status==="Verified"
+?"verified"
+:"pending";
+
+
+tr.innerHTML=`
+
+<td>
+${p.id}
+</td>
+
+<td>
+
+<strong>
+${p.tree}
+</strong>
+
+<br>
+
+<small>
+${p.farm}
+</small>
+
+</td>
+
+<td>
+${p.count}
+</td>
+
+<td>
+${p.age}
+</td>
+
+<td>
+${Number(p.carbon).toFixed(2)}
+kg
+</td>
+
+<td>
+
+<span class="badge ${cls}">
+${p.status}
+</span>
+
+</td>
+
+`;
+
+
+table.appendChild(
+tr
+);
+
+});
+
+}
+
+
+/* =====================================================
+   NFT LIST
+===================================================== */
+
+function loadNFTPlants(){
+
+const select=
+document.getElementById(
+"nftPlant"
+);
+
+select.innerHTML="";
+
+
+const verified=
+plants.filter(
+p=>p.verified===true
+);
+
+
+if(
+verified.length===0
+){
+
+select.innerHTML=
+"<option>No verified plants available</option>";
+
+return;
+
+}
+
+
+verified.forEach(
+p=>{
+
+const option=
+document.createElement(
+"option"
+);
+
+option.value=
+p.id;
+
+option.innerText=
+p.id+
+" - "+
+p.tree+
+" - "+
+Number(
+p.credits
+).toFixed(3)+
+" tCO₂e";
+
+select.appendChild(
+option
+);
+
+});
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard(){
+
+const totalPlants=
+plants.reduce(
+(sum,p)=>
+sum+Number(p.count),
+0
+);
+
+
+const totalCarbon=
+plants.reduce(
+(sum,p)=>
+sum+Number(p.carbon),
+0
+);
+
+
+const credits=
+totalCarbon/1000;
+
+
+const verified=
+plants
+.filter(
+p=>p.verified
+)
+.reduce(
+(sum,p)=>
+sum+Number(p.credits),
+0
+);
+
+
+document.getElementById(
+"totalPlants"
+).innerText=
+totalPlants;
+
+
+document.getElementById(
+"totalCarbon"
+).innerText=
+totalCarbon.toFixed(2);
+
+
+document.getElementById(
+"totalCredits"
+).innerText=
+credits.toFixed(3);
+
+
+document.getElementById(
+"retiredCredits"
+).innerText=
+retired.toFixed(3);
+
+
+document.getElementById(
+"creditPageTotal"
+).innerText=
+credits.toFixed(3);
+
+
+document.getElementById(
+"verifiedCredits"
+).innerText=
+verified.toFixed(3);
+
+
+document.getElementById(
+"retiredPageTotal"
+).innerText=
+retired.toFixed(3);
+
+
+loadPlants();
+
+loadNFTPlants();
+
+}
+
+
+/* =====================================================
+   RETIRE CARBON
+===================================================== */
+
+function retireCarbon(){
+
+const amount=
+Number(
+document.getElementById(
+"retireAmount"
+).value
+);
+
+
+if(
+!amount||
+amount<=0
+){
+
+showModal(
+"Invalid Amount",
+"Enter a valid tCO₂e amount."
+);
+
+return;
+
+}
+
+
+const total=
+plants.reduce(
+(sum,p)=>
+sum+Number(p.credits),
+0
+);
+
+
+if(
+amount>
+total-retired
+){
+
+showModal(
+"Insufficient Credits",
+"Not enough available estimated credits."
+);
+
+return;
+
+}
+
+
+retired+=amount;
+
+
+localStorage.setItem(
+"AJJRA_RETIRED",
+retired
+);
+
+
+document.getElementById(
+"retireAmount"
+).value="";
+
+
+showModal(
+"Carbon Retired",
+amount.toFixed(3)+
+" tCO₂e marked as retired."
+);
+
+
+updateDashboard();
+
+}
+
+
+/* =====================================================
+   CONNECT WALLET
+===================================================== */
+
+async function connectWallet(){
+
+if(!window.ethereum){
+
+showModal(
+"Wallet Not Found",
+"Open BridgeKey, MetaMask or another EVM-compatible wallet."
+);
+
+return;
+
+}
+
+
+try{
+
+loading(
+true,
+"Connecting wallet..."
+);
+
+
+const provider=
+new ethers.BrowserProvider(
+window.ethereum
+);
+
+
+const accounts=
+await provider.send(
+"eth_requestAccounts",
+[]
+);
+
+
+if(
+!accounts.length
+){
+
+loading(false);
+
+return;
+
+}
+
+
+walletAddress=
+ethers.getAddress(
+accounts[0]
+);
+
+
+document.getElementById(
+"walletStatusBadge"
+).innerHTML=
+'<span class="dot"></span> Connected';
+
+
+document.getElementById(
+"walletAddress"
+).innerText=
+walletAddress;
+
+
+document.getElementById(
+"walletButton"
+).innerText=
+walletAddress.slice(0,6)+
+"..."+
+walletAddress.slice(-4);
+
+
+loading(false);
+
+
+showModal(
+"Wallet Connected",
+walletAddress
+);
+
+
+}catch(error){
+
+loading(false);
+
+console.error(error);
+
+
+showModal(
+"Wallet Error",
+error.message||
+"Wallet connection failed."
+);
+
+}
+
+}
+
+
+/* =====================================================
+   ADD MST NETWORK
+===================================================== */
+
+async function addMSTNetwork(){
+
+if(!window.ethereum){
+
+showModal(
+"Wallet Required",
+"Please open an EVM wallet first."
+);
+
+return;
+
+}
+
+
+try{
+
+await window.ethereum.request({
+
+method:
+"wallet_addEthereumChain",
+
+params:[
+MST_MAINNET
+]
+
+});
+
+
+showModal(
+"MST Mainnet",
+"MST Mainnet was added to your wallet."
+);
+
+
+}catch(error){
+
+console.error(error);
+
+
+showModal(
+"Network Error",
+error.message||
+"Unable to add MST Mainnet."
+);
+
+}
+
+}
+
+
+/* =====================================================
+   SWITCH MST
+===================================================== */
+
+async function switchMSTNetwork(){
+
+if(!window.ethereum){
+
+showModal(
+"Wallet Required",
+"Please open an EVM wallet first."
+);
+
+return;
+
+}
+
+
+try{
+
+await window.ethereum.request({
+
+method:
+"wallet_switchEthereumChain",
+
+params:[
+{
+chainId:
+MST_MAINNET.chainId
+}
+]
+
+});
+
+
+showModal(
+"MST Mainnet",
+"Wallet switched to MST Mainnet."
+);
+
+
+}catch(error){
+
+console.error(error);
+
+
+if(
+error.code===4902
+){
+
+await addMSTNetwork();
+
+}else{
+
+showModal(
+"Switch Failed",
+error.message||
+"Unable to switch network."
+);
+
+}
+
+}
+
+}
+
+
+/* =====================================================
+   CHECK NETWORK
+===================================================== */
+
+async function checkNetwork(){
+
+if(!window.ethereum)
+return;
+
+
+try{
+
+const chainId=
+await window.ethereum.request({
+
+method:"eth_chainId"
+
+});
+
+
+console.log(
+"Current Chain:",
+chainId
+);
+
+
+}catch(error){
+
+console.log(error);
+
+}
+
+}
+
+
+/* =====================================================
+   NFT MINT
+===================================================== */
+
+async function mintNFT(){
+
+if(!walletAddress){
+
+showModal(
+"Connect Wallet",
+"Connect your wallet before minting."
+);
+
+return;
+
+}
+
+
+const plantId=
+document.getElementById(
+"nftPlant"
+).value;
+
+
+const metadata=
+document.getElementById(
+"metadataURI"
+).value.trim();
+
+
+const contract=
+document.getElementById(
+"nftContract"
+).value.trim();
+
+
+if(
+!plantId||
+plantId===
+"No verified plants available"
+){
+
+showModal(
+"Verification Required",
+"No verified plant is available."
+);
+
+return;
+
+}
+
+
+if(!metadata){
+
+showModal(
+"Metadata Required",
+"Enter the IPFS metadata URI."
+);
+
+return;
+
+}
+
+
+if(
+!ethers.isAddress(contract)
+){
+
+showModal(
+"Invalid Contract",
+"Enter a valid NFT contract address."
+);
+
+return;
+
+}
+
+
+try{
+
+loading(
+true,
+"Preparing NFT transaction..."
+);
+
+
+const provider=
+new ethers.BrowserProvider(
+window.ethereum
+);
+
+
+const signer=
+await provider.getSigner();
+
+
+const abi=[
+
+"function mint(address to,string uri) external returns (uint256)"
+
+];
+
+
+const nft=
+new ethers.Contract(
+contract,
+abi,
+signer
+);
+
+
+loading(
+false,
+"Confirm transaction..."
+);
+
+
+showModal(
+"Confirm NFT Mint",
+"Confirm the transaction in your wallet."
+);
+
+
+const tx=
+await nft.mint(
+walletAddress,
+metadata
+);
+
+
+loading(
+true,
+"Waiting for blockchain confirmation..."
+);
+
+
+await tx.wait();
+
+
+loading(false);
+
+
+const result=
+document.getElementById(
+"nftResult"
+);
+
+
+result.style.display="block";
+
+
+result.innerHTML=`
+
+<strong>
+✅ NFT Minted Successfully
+</strong>
+
+<br><br>
+
+Transaction:
+
+<div class="address">
+${tx.hash}
+</div>
+
+<br>
+
+<a
+href="https://mstscan.com/tx/${tx.hash}"
+target="_blank"
+rel="noopener">
+
+🔎 View Transaction
+
+</a>
+
+`;
+
+
+showModal(
+"NFT Minted",
+"Carbon NFT transaction confirmed on MST Mainnet."
+);
+
+
+}catch(error){
+
+loading(false);
+
+console.error(error);
+
+
+showModal(
+"Mint Failed",
+error.reason||
+error.shortMessage||
+error.message||
+"Transaction failed."
+);
+
+}
+
+}
+
+
+/* =====================================================
+   WALLET EVENTS
+===================================================== */
+
+if(
+window.ethereum
+){
+
+window.ethereum.on(
+"accountsChanged",
+accounts=>{
+
+if(
+accounts.length
+){
+
+walletAddress=
+ethers.getAddress(
+accounts[0]
+);
+
+
+document.getElementById(
+"walletStatusBadge"
+).innerHTML=
+'<span class="dot"></span> Connected';
+
+
+document.getElementById(
+"walletAddress"
+).innerText=
+walletAddress;
+
+
+document.getElementById(
+"walletButton"
+).innerText=
+walletAddress.slice(0,6)+
+"..."+
+walletAddress.slice(-4);
+
+}else{
+
+walletAddress=null;
+
+
+document.getElementById(
+"walletStatusBadge"
+).innerHTML=
+'<span class="dot"></span> Not Connected';
+
+
+document.getElementById(
+"walletAddress"
+).innerText=
+"No wallet connected";
+
+
+document.getElementById(
+"walletButton"
+).innerText=
+"Connect Wallet";
+
+}
+
+}
+);
+
+
+window.ethereum.on(
+"chainChanged",
+()=>{
+
+location.reload();
+
+}
+);
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadTreeList();
+
+calculateCarbon();
+
+updateDashboard();
+
+checkNetwork();
+
+</script>
+
+</body>
+</html>
